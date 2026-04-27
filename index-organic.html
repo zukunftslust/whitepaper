@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zukunftslust — I²Q Innovationsintelligenz-Framework</title>
+  <meta name="description" content="Organisationen scheitern nicht an fehlenden Ideen. Sie scheitern am falschen Modus. Das I²Q-Framework macht Innovationsblockaden sichtbar.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Sora:wght@300;400;600;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-warm: #F2EDE8;
+      --bg-warm-2: #EDE4DC;
+      --bg-warm-3: #E8DED8;
+      --bg-warm-4: #DDD5CE;
+      --bg-blue-world: #E8E4DE;
+      --bg-red-world-1: #F0DDD5;
+      --bg-red-world-2: #ECDAD4;
+      --bg-triade: #FAFAF7;
+      --bg-quote-1: #F5ECE6;
+      --bg-quote-2: #F0E6E0;
+      --bg-quote-3: #EDE2DC;
+      --pink: #FF10F0;
+      --pink-40: rgba(255, 16, 240, 0.4);
+      --pink-30: rgba(255, 16, 240, 0.3);
+      --pink-25: rgba(255, 16, 240, 0.25);
+      --pink-15: rgba(255, 16, 240, 0.15);
+      --pink-12: rgba(255, 16, 240, 0.12);
+      --pink-08: rgba(255, 16, 240, 0.08);
+      --text-dark: #1A1A1A;
+      --text-body: rgba(0,0,0,0.42);
+      --text-muted: rgba(0,0,0,0.35);
+      --text-light: rgba(0,0,0,0.25);
+      --text-ghost: rgba(0,0,0,0.15);
+      --border-soft: rgba(0,0,0,0.04);
+      --border-light: rgba(0,0,0,0.05);
+      --border-medium: rgba(0,0,0,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-dark);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .mono { font-family: 'Space Mono', monospace; }
+
+    /* ─── GLOW UTILITY ─── */
+    .glow {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* ─── NAVIGATION ─── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 48px;
+      background: rgba(242, 237, 232, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .nav-logo {
+      font-family: 'Sora', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-dark);
+      letter-spacing: 0.3px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      font-size: 15px;
+      color: rgba(0,0,0,0.45);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-dark);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(160deg, var(--bg-warm) 0%, var(--bg-warm-2) 25%, var(--bg-warm-3) 50%, var(--bg-warm-4) 100%);
+      padding: 120px 48px 100px;
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero .g1 {
+      top: -80px; right: -20px; width: 520px; height: 520px;
+      background: radial-gradient(circle, rgba(255,16,240,0.45) 0%, rgba(255,16,240,0.18) 35%, rgba(255,16,240,0.05) 55%, transparent 75%);
+      filter: blur(55px);
+    }
+
+    .hero .g2 {
+      top: 100px; right: 160px; width: 350px; height: 400px;
+      background: radial-gradient(circle, rgba(200,160,255,0.4) 0%, rgba(200,160,255,0.12) 45%, transparent 68%);
+      filter: blur(50px);
+    }
+
+    .hero .g3 {
+      bottom: -60px; left: 8%; width: 480px; height: 350px;
+      background: radial-gradient(circle, rgba(255,16,240,0.3) 0%, rgba(255,100,200,0.1) 45%, transparent 68%);
+      filter: blur(60px);
+    }
+
+    .hero .g4 {
+      top: 60px; left: -40px; width: 320px; height: 360px;
+      background: radial-gradient(circle, rgba(255,200,180,0.5) 0%, rgba(255,180,160,0.15) 45%, transparent 70%);
+      filter: blur(45px);
+    }
+
+    .hero .g5 {
+      top: 220px; left: 40%; width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(255,16,240,0.25) 0%, transparent 65%);
+      filter: blur(40px);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+    }
+
+    .hero-kicker {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      margin-bottom: 36px;
+    }
+
+    .hero-line {
+      font-family: 'Sora', sans-serif;
+      font-size: 60px;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -1.5px;
+      margin-bottom: 10px;
+    }
+
+    .hl-dark { color: var(--text-dark); }
+    .hl-pink { color: var(--pink); }
+    .hl-blur1 { color: rgba(26,26,26,0.25); filter: blur(2.5px); }
+    .hl-blur2 { color: var(--pink-12); filter: blur(5px); }
+
+    .hero-body {
+      font-size: 17px;
+      font-weight: 300;
+      color: rgba(0,0,0,0.5);
+      line-height: 1.8;
+      max-width: 520px;
+      margin-top: 40px;
+      margin-bottom: 48px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+    }
+
+    .btn-pink {
+      display: inline-block;
+      padding: 16px 36px;
+      background: var(--pink);
+      font-size: 15px;
+      font-weight: 500;
+      color: #FFF;
+      border-radius: 24px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+
+    .btn-pink:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 30px rgba(255,16,240,0.25);
+    }
+
+    .btn-soft {
+      display: inline-block;
+      padding: 16px 36px;
+      background: rgba(0,0,0,0.05);
+      font-size: 15px;
+      font-weight: 400;
+      color: rgba(0,0,0,0.45);
+      border-radius: 24px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .btn-soft:hover {
+      background: rgba(0,0,0,0.08);
+    }
+
+    /* ─── WORLDS SPLIT ─── */
+    .worlds {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .world {
+      padding: 72px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .world-blue {
+      background: var(--bg-blue-world);
+    }
+
+    .world-red {
+      background: linear-gradient(135deg, var(--bg-red-world-1), var(--bg-red-world-2));
+    }
+
+    .world-blue .g-w1 {
+      top: -30px; right: -40px; width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(200,180,160,0.5) 0%, rgba(200,180,160,0.15) 45%, transparent 70%);
+      filter: blur(40px);
+    }
+
+    .world-blue .g-w2 {
+      bottom: -20px; left: 30px; width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(180,160,220,0.35) 0%, transparent 65%);
+      filter: blur(35px);
+    }
+
+    .world-red .g-w1 {
+      top: 10px; right: -30px; width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(255,16,240,0.3) 0%, rgba(255,16,240,0.08) 50%, transparent 70%);
+      filter: blur(45px);
+    }
+
+    .world-red .g-w2 {
+      bottom: -40px; left: 40px; width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(255,100,200,0.3) 0%, transparent 65%);
+      filter: blur(40px);
+    }
+
+    .world-tag {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .world-blue .world-tag { color: var(--text-light); }
+    .world-red .world-tag { color: rgba(255,16,240,0.6); }
+
+    .world-headline {
+      font-family: 'Sora', sans-serif;
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text-dark);
+      margin-bottom: 18px;
+      letter-spacing: -0.5px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .world-body {
+      font-size: 15px;
+      line-height: 1.75;
+      position: relative;
+      z-index: 1;
+    }
+
+    .world-blue .world-body { color: rgba(0,0,0,0.45); }
+    .world-red .world-body { color: rgba(0,0,0,0.5); }
+
+    /* ─── TRIADE ─── */
+    .triade {
+      background: var(--bg-triade);
+      padding: 100px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .triade .g-t1 {
+      top: -40px; left: 20%; width: 380px; height: 280px;
+      background: radial-gradient(circle, var(--pink-15) 0%, rgba(255,16,240,0.04) 50%, transparent 70%);
+      filter: blur(45px);
+    }
+
+    .triade .g-t2 {
+      bottom: -30px; right: 10%; width: 280px; height: 220px;
+      background: radial-gradient(circle, rgba(180,160,230,0.25) 0%, transparent 65%);
+      filter: blur(40px);
+    }
+
+    .triade-kicker {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .triade-headline {
+      font-family: 'Sora', sans-serif;
+      font-size: 34px;
+      font-weight: 700;
+      color: var(--text-dark);
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      margin-bottom: 56px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .triade-headline span { color: var(--pink); }
+
+    .triade-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .triade-card {
+      padding: 36px 28px;
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .triade-card::before {
+      content: '';
+      position: absolute;
+      top: -25px; right: -25px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(30px);
+    }
+
+    .triade-card:nth-child(1)::before { background: rgba(200,220,230,0.35); }
+    .triade-card:nth-child(2)::before { background: var(--pink-12); }
+    .triade-card:nth-child(3)::before { background: rgba(255,200,180,0.35); }
+
+    .triade-num {
+      font-size: 12px;
+      color: var(--text-ghost);
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+
+    .triade-name {
+      font-family: 'Sora', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+      letter-spacing: -0.3px;
+    }
+
+    .triade-sub {
+      font-size: 10px;
+      color: var(--text-light);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .triade-question {
+      font-size: 15px;
+      color: rgba(0,0,0,0.45);
+      line-height: 1.7;
+    }
+
+    /* ─── QUOTE ─── */
+    .quote-section {
+      position: relative;
+      overflow: hidden;
+      padding: 100px 48px;
+      background: linear-gradient(135deg, var(--bg-quote-1), var(--bg-quote-2), var(--bg-quote-3));
+    }
+
+    .quote-section .g-q1 {
+      top: -50px; left: 20%; width: 400px; height: 320px;
+      background: radial-gradient(circle, var(--pink-30) 0%, var(--pink-08) 45%, transparent 70%);
+      filter: blur(50px);
+    }
+
+    .quote-section .g-q2 {
+      bottom: -40px; right: 12%; width: 320px; height: 260px;
+      background: radial-gradient(circle, rgba(255,120,220,0.25) 0%, rgba(200,140,255,0.1) 45%, transparent 70%);
+      filter: blur(45px);
+    }
+
+    .quote-section .g-q3 {
+      top: 30%; left: 55%; width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(255,200,180,0.4) 0%, transparent 65%);
+      filter: blur(40px);
+    }
+
+    .quote-mark {
+      font-size: 120px;
+      font-weight: 300;
+      color: rgba(255,16,240,0.2);
+      line-height: 0.7;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .quote-text {
+      font-family: 'Sora', sans-serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--text-dark);
+      line-height: 1.4;
+      letter-spacing: -0.5px;
+      max-width: 620px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .quote-attr {
+      font-size: 10px;
+      color: var(--text-light);
+      margin-top: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ─── CHAPTERS ─── */
+    .chapters {
+      background: var(--bg-triade);
+      padding: 88px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chapters .g-ch {
+      bottom: -25px; left: -15px; width: 280px; height: 220px;
+      background: radial-gradient(circle, rgba(255,16,240,0.1) 0%, transparent 65%);
+      filter: blur(35px);
+    }
+
+    .chapters-head {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .chapter {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--border-soft);
+      position: relative;
+      z-index: 1;
+      cursor: pointer;
+      transition: padding-left 0.3s;
+    }
+
+    .chapter:first-of-type {
+      border-top: 1px solid var(--border-soft);
+    }
+
+    .chapter:hover {
+      padding-left: 8px;
+    }
+
+    .chapter:hover .ch-arrow {
+      transform: translateX(4px);
+    }
+
+    .ch-num {
+      font-size: 12px;
+      color: var(--text-ghost);
+      letter-spacing: 1px;
+      min-width: 28px;
+    }
+
+    .ch-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-dark);
+      letter-spacing: -0.3px;
+      flex: 1;
+    }
+
+    .ch-teaser {
+      font-size: 13px;
+      color: rgba(0,0,0,0.3);
+      text-align: right;
+      max-width: 200px;
+    }
+
+    .ch-arrow {
+      font-size: 16px;
+      color: var(--pink);
+      margin-left: 12px;
+      transition: transform 0.3s;
+    }
+
+    /* ─── CTA ─── */
+    .cta-section {
+      position: relative;
+      overflow: hidden;
+      padding: 120px 48px;
+      background: linear-gradient(160deg, var(--bg-warm), var(--bg-warm-2), var(--bg-warm-3));
+      text-align: center;
+    }
+
+    .cta-section .g-c1 {
+      top: -60px; left: 8%; width: 440px; height: 380px;
+      background: radial-gradient(circle, rgba(255,16,240,0.45) 0%, rgba(255,16,240,0.15) 30%, rgba(255,16,240,0.04) 50%, transparent 70%);
+      filter: blur(55px);
+    }
+
+    .cta-section .g-c2 {
+      bottom: -50px; right: 12%; width: 380px; height: 320px;
+      background: radial-gradient(circle, rgba(200,150,255,0.4) 0%, rgba(180,130,240,0.12) 40%, transparent 68%);
+      filter: blur(50px);
+    }
+
+    .cta-section .g-c3 {
+      top: 25%; left: 42%; width: 320px; height: 280px;
+      background: radial-gradient(circle, var(--pink-30) 0%, rgba(255,80,200,0.08) 45%, transparent 70%);
+      filter: blur(45px);
+    }
+
+    .cta-section .g-c4 {
+      top: 8%; left: 3%; width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(255,180,200,0.5) 0%, transparent 65%);
+      filter: blur(35px);
+    }
+
+    .cta-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-line {
+      font-family: 'Sora', sans-serif;
+      font-size: 46px;
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .cta-dark { color: var(--text-dark); }
+    .cta-pink { color: var(--pink); }
+    .cta-blur1 { color: rgba(26,26,26,0.15); filter: blur(3px); }
+    .cta-blur2 { color: var(--pink-08); filter: blur(6px); }
+
+    .cta-body {
+      font-size: 16px;
+      color: rgba(0,0,0,0.45);
+      margin-top: 28px;
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .btn-soft-border {
+      display: inline-block;
+      padding: 16px 36px;
+      border: 1px solid var(--border-medium);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-muted);
+      border-radius: 24px;
+      text-decoration: none;
+      transition: border-color 0.3s, color 0.3s;
+    }
+
+    .btn-soft-border:hover {
+      border-color: rgba(0,0,0,0.2);
+      color: var(--text-dark);
+    }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      background: var(--bg-warm);
+      padding: 20px 48px;
+      border-top: 1px solid var(--border-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-left {
+      font-size: 11px;
+      color: var(--text-light);
+    }
+
+    .footer-right {
+      font-size: 10px;
+      color: var(--text-light);
+      letter-spacing: 1px;
+    }
+
+    .footer-right a {
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-right a:hover {
+      color: var(--text-dark);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .nav { padding: 14px 24px; }
+      .nav-links { gap: 16px; }
+      .nav-links a { font-size: 11px; }
+
+      .hero { padding: 80px 24px 60px; min-height: auto; }
+      .hero-line { font-size: 40px; }
+      .hero-body { font-size: 15px; max-width: 100%; }
+
+      .worlds { grid-template-columns: 1fr; }
+      .world { padding: 48px 24px; }
+      .world-headline { font-size: 24px; }
+
+      .triade { padding: 56px 24px; }
+      .triade-headline { font-size: 24px; }
+      .triade-grid { grid-template-columns: 1fr; gap: 16px; }
+
+      .quote-section { padding: 56px 24px; }
+      .quote-text { font-size: 20px; }
+      .quote-mark { font-size: 80px; }
+
+      .chapters { padding: 48px 24px; }
+      .ch-teaser { display: none; }
+
+      .cta-section { padding: 64px 24px; }
+      .cta-line { font-size: 30px; }
+      .cta-buttons { flex-direction: column; align-items: center; }
+
+      .footer { padding: 16px 24px; flex-direction: column; gap: 8px; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links { display: none; }
+
+      .hero-line { font-size: 32px; }
+      .hero-kicker { font-size: 9px; }
+
+      .world-headline { font-size: 22px; }
+
+      .triade-headline { font-size: 20px; }
+
+      .cta-line { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAVIGATION ─── -->
+  <nav class="nav">
+    <div class="nav-logo">Zukunftslust</div>
+    <div class="nav-links">
+      <a href="#framework">Framework</a>
+      <a href="#chapters">Whitepaper</a>
+      <a href="#diagnose">Diagnose</a>
+      <a href="#">Danny Locher</a>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero" id="hero">
+    <div class="glow g1"></div>
+    <div class="glow g2"></div>
+    <div class="glow g3"></div>
+    <div class="glow g4"></div>
+    <div class="glow g5"></div>
+    <div class="hero-inner">
+      <p class="hero-kicker mono">I²Q — Innovationsintelligenz</p>
+      <h1 class="hero-line hl-dark">Falscher Modus.</h1>
+      <h1 class="hero-line hl-pink">Echtes Problem.</h1>
+      <h1 class="hero-line hl-blur1">Offene Zukunft.</h1>
+      <h1 class="hero-line hl-blur2">Neue Möglichkeiten.</h1>
+      <p class="hero-body">Innovation scheitert nicht an fehlenden Ideen oder falschen Methoden. Sie scheitert daran, dass wir Ungewissheit als Bedrohung wahrnehmen und nicht als Einladung in einer Zukunft die wir gestalten können.</p>
+      <div class="hero-ctas">
+        <a href="#chapters" class="btn-pink">Whitepaper lesen</a>
+        <a href="#diagnose" class="btn-soft">Self-Assessment</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── WORLDS SPLIT ─── -->
+  <section class="worlds" id="framework">
+    <div class="world world-blue">
+      <div class="glow g-w1"></div>
+      <div class="glow g-w2"></div>
+      <p class="world-tag mono">Blaue Welt</p>
+      <h2 class="world-headline">Bekannte Regeln.<br>Bewährte Werkzeuge.</h2>
+      <p class="world-body">Exploitation. Pläne, KPIs, Best Practices. Hier ist Effizienz die richtige Antwort.</p>
+    </div>
+    <div class="world world-red">
+      <div class="glow g-w1"></div>
+      <div class="glow g-w2"></div>
+      <p class="world-tag mono">Rote Welt</p>
+      <h2 class="world-headline">Keine Regeln.<br>Nur Möglichkeiten.</h2>
+      <p class="world-body">Exploration. Keine Garantien, keine Best Practices. Hier entsteht die Zukunft.</p>
+    </div>
+  </section>
+
+  <!-- ─── DIAGNOSE TRIADE ─── -->
+  <section class="triade" id="diagnose">
+    <div class="glow g-t1"></div>
+    <div class="glow g-t2"></div>
+    <p class="triade-kicker mono">Die Diagnose-Triade</p>
+    <h2 class="triade-headline">Drei Fragen. Drei Komponenten.<br>Ein <span>Framework</span>.</h2>
+    <div class="triade-grid">
+      <div class="triade-card">
+        <p class="triade-num mono">01</p>
+        <h3 class="triade-name">Erkennen</h3>
+        <p class="triade-sub mono">Kognitive Komponente</p>
+        <p class="triade-question">Erkennt die Organisation, in welcher Welt sie gerade operiert — oder wendet sie die falschen Werkzeuge an?</p>
+      </div>
+      <div class="triade-card">
+        <p class="triade-num mono">02</p>
+        <h3 class="triade-name">Bereitschaft</h3>
+        <p class="triade-sub mono">Emotionale Komponente</p>
+        <p class="triade-question">Halten die Beteiligten Unsicherheit aus — oder flüchten sie in Scheinproduktivität?</p>
+      </div>
+      <div class="triade-card">
+        <p class="triade-num mono">03</p>
+        <h3 class="triade-name">Gestaltung</h3>
+        <p class="triade-sub mono">Kontextuelle Komponente</p>
+        <p class="triade-question">Lässt der Kontext Exploration tatsächlich zu — oder nur auf dem Papier?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── QUOTE ─── -->
+  <section class="quote-section">
+    <div class="glow g-q1"></div>
+    <div class="glow g-q2"></div>
+    <div class="glow g-q3"></div>
+    <div class="quote-mark">&bdquo;</div>
+    <p class="quote-text">Wir versuchen, die Zukunft mit den Sicherheitsvorschriften der Gegenwart zu bauen.</p>
+    <p class="quote-attr mono">Kernthese — I²Q Framework</p>
+  </section>
+
+  <!-- ─── CHAPTERS ─── -->
+  <section class="chapters" id="chapters">
+    <div class="glow g-ch"></div>
+    <p class="chapters-head mono">Whitepaper — sechs Kapitel</p>
+    <div class="chapter">
+      <span class="ch-num mono">01</span>
+      <span class="ch-title">Warum Zukunftslust jetzt zählt</span>
+      <span class="ch-teaser">Die Kernbeobachtung</span>
+      <span class="ch-arrow">&rarr;</span>
+    </div>
+    <div class="chapter">
+      <span class="ch-num mono">02</span>
+      <span class="ch-title">Das I²Q-Modell im Überblick</span>
+      <span class="ch-teaser">3 × 4 Matrix</span>
+      <span class="ch-arrow">&rarr;</span>
+    </div>
+    <div class="chapter">
+      <span class="ch-num mono">03</span>
+      <span class="ch-title">Die drei Komponenten im Detail</span>
+      <span class="ch-teaser">Erkennen, Bereitschaft, Gestaltung</span>
+      <span class="ch-arrow">&rarr;</span>
+    </div>
+    <div class="chapter">
+      <span class="ch-num mono">04</span>
+      <span class="ch-title">Wie sich Ambidextrie entwickelt</span>
+      <span class="ch-teaser">Blockade vor Training</span>
+      <span class="ch-arrow">&rarr;</span>
+    </div>
+    <div class="chapter">
+      <span class="ch-num mono">05</span>
+      <span class="ch-title">I²Q in der Praxis</span>
+      <span class="ch-teaser">Drei Wege</span>
+      <span class="ch-arrow">&rarr;</span>
+    </div>
+    <div class="chapter">
+      <span class="ch-num mono">06</span>
+      <span class="ch-title">Profil &amp; nächste Schritte</span>
+      <span class="ch-teaser">Assessment, Formate</span>
+      <span class="ch-arrow">&rarr;</span>
+    </div>
+  </section>
+
+  <!-- ─── CTA ─── -->
+  <section class="cta-section">
+    <div class="glow g-c1"></div>
+    <div class="glow g-c2"></div>
+    <div class="glow g-c3"></div>
+    <div class="glow g-c4"></div>
+    <div class="cta-inner">
+      <div class="cta-line cta-dark">Nicht weg.</div>
+      <div class="cta-line cta-pink">Blockiert.</div>
+      <div class="cta-line cta-blur1">Lösbar.</div>
+      <div class="cta-line cta-blur2">Gestaltbar.</div>
+      <p class="cta-body">Das Self-Assessment zeigt, wo die Blockaden liegen.<br>Dein Feedback macht das Framework besser.</p>
+      <div class="cta-buttons">
+        <a href="#" class="btn-pink">Diagnose starten</a>
+        <a href="#" class="btn-soft-border">Feedback geben</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="footer">
+    <div class="footer-left">Danny Locher · Zukunftslust · 2026</div>
+    <div class="footer-right mono">
+      <a href="#">Impressum</a> · <a href="#">Datenschutz</a>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zukunftslust — I²Q Innovationsintelligenz-Framework</title>
+  <meta name="description" content="Organisationen scheitern nicht an fehlenden Ideen. Sie scheitern am falschen Modus. Das I²Q-Framework macht Innovationsblockaden sichtbar.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --night: #0B1528;
+      --night-light: #0E1A30;
+      --red: #E63B2E;
+      --yellow: #FFD600;
+      --cream: #F5F4EF;
+      --white: #FFFFFF;
+      --text-bright: rgba(255,255,255,1);
+      --text-body: rgba(255,255,255,0.7);
+      --text-muted: rgba(255,255,255,0.55);
+      --text-ghost: rgba(255,255,255,0.025);
+      --text-border: rgba(255,255,255,0.06);
+      --text-border-hover: rgba(255,255,255,0.2);
+      --cream-dark: #1A1A1A;
+      --cream-body: #777;
+      --cream-muted: #AAA;
+      --cream-num: #E0DDD5;
+      --cream-line: #D5D3CC;
+    }
+
+    .fb { font-family: 'Bebas Neue', sans-serif; }
+    .fi { font-family: 'Inter', sans-serif; }
+    .fm { font-family: 'Space Mono', monospace; }
+
+    body {
+      background: var(--night);
+      color: var(--text-bright);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ---- NAV ---- */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 48px;
+      background: var(--night);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--text-border);
+    }
+    .nav-logo {
+      font-size: 24px;
+      color: var(--text-bright);
+      letter-spacing: 5px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.3px;
+    }
+    .nav-links a:hover { color: var(--text-bright); transition: color 0.2s; }
+
+    /* ---- HERO ---- */
+    .hero {
+      background: var(--night);
+      padding: 80px 48px 0;
+      position: relative;
+      overflow: hidden;
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .hero-ghost {
+      position: absolute;
+      top: -20px;
+      right: -40px;
+      font-size: 22vw;
+      line-height: 0.8;
+      letter-spacing: 4px;
+      color: var(--text-ghost);
+      text-transform: uppercase;
+      pointer-events: none;
+      user-select: none;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      padding-bottom: 80px;
+    }
+    .hero-kick {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .hero-h1 {
+      font-size: clamp(56px, 8vw, 96px);
+      color: var(--text-bright);
+      line-height: 0.88;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    .hero-h1 span { color: var(--red); }
+    .hero-p {
+      font-size: 16px;
+      color: var(--text-body);
+      line-height: 1.75;
+      max-width: 440px;
+      margin-bottom: 40px;
+    }
+    .hero-ctas { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-block;
+      padding: 16px 36px;
+      background: var(--red);
+      font-size: 18px;
+      color: var(--white);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #d03428; }
+    .btn-ghost {
+      display: inline-block;
+      padding: 16px 36px;
+      border: 1px solid var(--text-border-hover);
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--text-bright); color: var(--text-bright); }
+
+    /* ---- WORLDS SPLIT ---- */
+    .worlds {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .world {
+      padding: 64px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .world-blue { background: var(--night-light); }
+    .world-red { background: var(--red); }
+    .world-ghost {
+      position: absolute;
+      bottom: -20px;
+      right: -10px;
+      font-size: 120px;
+      line-height: 1;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      pointer-events: none;
+      user-select: none;
+    }
+    .world-blue .world-ghost { color: var(--text-ghost); }
+    .world-red .world-ghost { color: rgba(255,255,255,0.1); }
+    .world-tag {
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .world-blue .world-tag { color: var(--text-muted); }
+    .world-red .world-tag { color: rgba(255,255,255,0.55); }
+    .world-h {
+      font-size: 32px;
+      line-height: 0.95;
+      letter-spacing: 1px;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+    .world-p {
+      font-size: 14px;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .world-blue .world-p { color: var(--text-muted); }
+    .world-red .world-p { color: rgba(255,255,255,0.75); }
+
+    /* ---- TRIAD ---- */
+    .triad {
+      background: var(--cream);
+      padding: 80px 48px;
+    }
+    .triad-top { margin-bottom: 48px; }
+    .triad-kick {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      color: var(--cream-muted);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .triad-h {
+      font-size: 40px;
+      color: var(--cream-dark);
+      letter-spacing: 1px;
+      line-height: 0.95;
+    }
+    .triad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--cream-line);
+    }
+    .triad-card {
+      padding: 36px 28px 36px 0;
+      border-right: 1px solid var(--cream-line);
+    }
+    .triad-card:first-child { padding-left: 0; }
+    .triad-card:not(:first-child) { padding-left: 28px; }
+    .triad-card:last-child { border-right: none; padding-right: 0; }
+    .triad-num {
+      font-size: 72px;
+      color: var(--cream-num);
+      line-height: 0.85;
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+    .triad-name {
+      font-size: 24px;
+      color: var(--cream-dark);
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .triad-sub {
+      font-size: 10px;
+      color: var(--cream-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .triad-q {
+      font-size: 14px;
+      color: var(--cream-body);
+      line-height: 1.7;
+    }
+
+    /* ---- QUOTE ---- */
+    .quote {
+      padding: 64px 48px;
+      background: var(--yellow);
+      position: relative;
+      overflow: hidden;
+    }
+    .quote-ghost {
+      position: absolute;
+      top: -16px;
+      left: -8px;
+      font-size: 180px;
+      line-height: 1;
+      color: rgba(0,0,0,0.05);
+      pointer-events: none;
+      user-select: none;
+    }
+    .quote-text {
+      font-size: 32px;
+      color: var(--cream-dark);
+      line-height: 1.15;
+      letter-spacing: 0.5px;
+      position: relative;
+      max-width: 640px;
+    }
+    .quote-attr {
+      font-size: 10px;
+      color: rgba(0,0,0,0.3);
+      margin-top: 20px;
+      position: relative;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    /* ---- CHAPTERS ---- */
+    .chapters {
+      background: var(--white);
+      padding: 64px 48px;
+    }
+    .chapters-head {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #BBB;
+      margin-bottom: 32px;
+    }
+    .chapter {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid #F0EEEA;
+      transition: padding-left 0.2s;
+    }
+    .chapter:last-child { border-bottom: none; }
+    .chapter:hover { padding-left: 8px; }
+    .chapter-num {
+      font-size: 12px;
+      color: #D5D3CC;
+      letter-spacing: 1px;
+      min-width: 28px;
+    }
+    .chapter-title {
+      font-size: 22px;
+      color: var(--cream-dark);
+      letter-spacing: 1px;
+      flex: 1;
+    }
+    .chapter-tease {
+      font-size: 12px;
+      color: #BBB;
+      text-align: right;
+      max-width: 220px;
+    }
+    .chapter-arrow {
+      font-size: 20px;
+      color: var(--red);
+      letter-spacing: 0;
+      margin-left: 8px;
+    }
+
+    /* ---- CTA ---- */
+    .cta-section {
+      background: var(--night);
+      padding: 80px 48px;
+      text-align: center;
+    }
+    .cta-h {
+      font-size: clamp(40px, 5vw, 56px);
+      color: var(--text-bright);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      line-height: 0.9;
+      margin-bottom: 16px;
+    }
+    .cta-h span { color: var(--red); }
+    .cta-p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+    .cta-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-white {
+      display: inline-block;
+      padding: 16px 36px;
+      background: var(--white);
+      color: var(--night);
+      font-size: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: background 0.2s;
+    }
+    .btn-white:hover { background: #F0EEEA; }
+
+    /* ---- FOOTER ---- */
+    .footer {
+      background: var(--night);
+      padding: 20px 48px;
+      border-top: 1px solid var(--text-border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: rgba(255,255,255,0.25);
+    }
+    .footer a:hover { color: var(--text-muted); }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 768px) {
+      .nav { padding: 16px 24px; }
+      .nav-logo { font-size: 20px; letter-spacing: 3px; }
+      .nav-links { gap: 16px; font-size: 11px; }
+
+      .hero { padding: 60px 24px 0; min-height: 70vh; }
+      .hero-inner { padding-bottom: 60px; }
+      .hero-p { font-size: 14px; }
+      .hero-ctas { flex-direction: column; align-items: flex-start; }
+
+      .worlds { grid-template-columns: 1fr; }
+      .world { padding: 48px 24px; }
+      .world-h { font-size: 28px; }
+
+      .triad { padding: 56px 24px; }
+      .triad-h { font-size: 32px; }
+      .triad-grid { grid-template-columns: 1fr; border-top: none; }
+      .triad-card {
+        padding: 28px 0;
+        border-right: none;
+        border-bottom: 1px solid var(--cream-line);
+      }
+      .triad-card:not(:first-child) { padding-left: 0; }
+      .triad-card:last-child { border-bottom: none; }
+
+      .quote { padding: 48px 24px; }
+      .quote-text { font-size: 24px; }
+
+      .chapters { padding: 48px 24px; }
+      .chapter { flex-wrap: wrap; gap: 8px; }
+      .chapter-title { font-size: 18px; }
+      .chapter-tease { display: none; }
+
+      .cta-section { padding: 56px 24px; }
+      .cta-btns { flex-direction: column; align-items: center; }
+
+      .footer { padding: 16px 24px; flex-direction: column; gap: 8px; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links { display: none; }
+      .hero-h1 { font-size: 48px; }
+      .world-ghost { font-size: 80px; }
+      .triad-num { font-size: 56px; }
+      .quote-ghost { font-size: 120px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="/" class="nav-logo fb">Zukunftslust</a>
+    <div class="nav-links fi">
+      <a href="#framework">Framework</a>
+      <a href="#whitepaper">Whitepaper</a>
+      <a href="#diagnose">Diagnose</a>
+      <a href="#about">Danny Locher</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-ghost fb">Zukunft</div>
+    <div class="hero-inner">
+      <p class="hero-kick fm">I²Q — Innovationsintelligenz</p>
+      <h1 class="hero-h1 fb">Falscher<br>Modus.<br><span>Echtes</span><br><span>Problem.</span></h1>
+      <p class="hero-p fi">Innovation scheitert nicht an fehlenden Ideen oder falschen Methoden. Sie scheitert daran, dass wir Ungewissheit als Bedrohung wahrnehmen und nicht als Einladung in einer Zukunft die wir gestalten können.</p>
+      <div class="hero-ctas">
+        <a href="#whitepaper" class="btn-primary fb">Whitepaper lesen &rarr;</a>
+        <a href="#diagnose" class="btn-ghost fi">Self-Assessment</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORLDS SPLIT -->
+  <section class="worlds" id="framework">
+    <div class="world world-blue">
+      <div class="world-ghost fb">Blau</div>
+      <p class="world-tag fm">Blaue Welt</p>
+      <h2 class="world-h fb">Bekannte Regeln.<br>Bewährte Werkzeuge.</h2>
+      <p class="world-p fi">Exploitation. Hier funktionieren Pläne, KPIs und Best Practices. Effizienz ist die richtige Antwort.</p>
+    </div>
+    <div class="world world-red">
+      <div class="world-ghost fb">Rot</div>
+      <p class="world-tag fm">Rote Welt</p>
+      <h2 class="world-h fb">Keine Regeln.<br>Nur Möglichkeiten.</h2>
+      <p class="world-p fi">Exploration. Keine Best Practices, keine Garantien. Hier entsteht die Zukunft — wenn man sie zulässt.</p>
+    </div>
+  </section>
+
+  <!-- TRIAD -->
+  <section class="triad">
+    <div class="triad-top">
+      <p class="triad-kick fm">Die Diagnose-Triade</p>
+      <h2 class="triad-h fb">Drei Fragen. Drei Komponenten.<br>Ein Framework.</h2>
+    </div>
+    <div class="triad-grid">
+      <div class="triad-card">
+        <div class="triad-num fb">I</div>
+        <h3 class="triad-name fb">Erkennen</h3>
+        <p class="triad-sub fm">Kognitive Komponente</p>
+        <p class="triad-q fi">Erkennt die Organisation, in welcher Welt sie gerade operiert — oder wendet sie die falschen Werkzeuge an?</p>
+      </div>
+      <div class="triad-card">
+        <div class="triad-num fb">II</div>
+        <h3 class="triad-name fb">Bereitschaft</h3>
+        <p class="triad-sub fm">Emotionale Komponente</p>
+        <p class="triad-q fi">Halten die Beteiligten Unsicherheit aus — oder flüchten sie in Scheinproduktivität und Kontrolle?</p>
+      </div>
+      <div class="triad-card">
+        <div class="triad-num fb">III</div>
+        <h3 class="triad-name fb">Gestaltung</h3>
+        <p class="triad-sub fm">Kontextuelle Komponente</p>
+        <p class="triad-q fi">Lässt der Kontext Exploration tatsächlich zu — oder nur auf dem Papier?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="quote">
+    <div class="quote-ghost fb">&bdquo;</div>
+    <p class="quote-text fb">Wir versuchen, die Zukunft mit den Sicherheitsvorschriften der Gegenwart zu bauen.</p>
+    <p class="quote-attr fm">Kernthese — I²Q Framework</p>
+  </section>
+
+  <!-- CHAPTERS -->
+  <section class="chapters" id="whitepaper">
+    <p class="chapters-head fm">Whitepaper — sechs Kapitel</p>
+    <a href="#" class="chapter">
+      <span class="chapter-num fm">01</span>
+      <span class="chapter-title fb">Warum Zukunftslust jetzt zählt</span>
+      <span class="chapter-tease fi">Die Kernbeobachtung</span>
+      <span class="chapter-arrow fb">&rarr;</span>
+    </a>
+    <a href="#" class="chapter">
+      <span class="chapter-num fm">02</span>
+      <span class="chapter-title fb">Das I²Q-Modell im Überblick</span>
+      <span class="chapter-tease fi">3 &times; 4 Matrix</span>
+      <span class="chapter-arrow fb">&rarr;</span>
+    </a>
+    <a href="#" class="chapter">
+      <span class="chapter-num fm">03</span>
+      <span class="chapter-title fb">Die drei Komponenten im Detail</span>
+      <span class="chapter-tease fi">Erkennen, Bereitschaft, Gestaltung</span>
+      <span class="chapter-arrow fb">&rarr;</span>
+    </a>
+    <a href="#" class="chapter">
+      <span class="chapter-num fm">04</span>
+      <span class="chapter-title fb">Wie sich Ambidextrie entwickelt</span>
+      <span class="chapter-tease fi">Blockade vor Training</span>
+      <span class="chapter-arrow fb">&rarr;</span>
+    </a>
+    <a href="#" class="chapter">
+      <span class="chapter-num fm">05</span>
+      <span class="chapter-title fb">I²Q in der Praxis</span>
+      <span class="chapter-tease fi">Drei Wege</span>
+      <span class="chapter-arrow fb">&rarr;</span>
+    </a>
+    <a href="#" class="chapter">
+      <span class="chapter-num fm">06</span>
+      <span class="chapter-title fb">Profil &amp; nächste Schritte</span>
+      <span class="chapter-tease fi">Assessment, Formate</span>
+      <span class="chapter-arrow fb">&rarr;</span>
+    </a>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="diagnose">
+    <h2 class="cta-h fb">Nicht weg.<br><span>Blockiert.</span></h2>
+    <p class="cta-p fi">Das Self-Assessment zeigt, wo die Blockaden liegen.<br>Dein Feedback macht das Framework besser.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-white fb">Diagnose starten</a>
+      <a href="#" class="btn-ghost fi">Feedback geben</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer fm">
+    <div>Danny Locher &middot; Zukunftslust &middot; 2026</div>
+    <div>
+      <a href="#">Impressum</a> &middot; <a href="#">Datenschutz</a>
+    </div>
+  </footer>
+
+</body>
+</html>
