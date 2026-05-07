@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I²Q Self-Assessment — Zukunftslust</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --night: #0B1528;
+    --night-light: #0E1A30;
+    --night-card: #111D35;
+    --night-card-hover: #152442;
+    --red: #E63B2E;
+    --red-20: rgba(230, 59, 46, 0.2);
+    --red-12: rgba(230, 59, 46, 0.12);
+    --red-08: rgba(230, 59, 46, 0.08);
+    --red-04: rgba(230, 59, 46, 0.04);
+    --yellow: #FFD600;
+    --yellow-20: rgba(255, 214, 0, 0.2);
+    --yellow-12: rgba(255, 214, 0, 0.12);
+    --cream: #F5F4EF;
+    --white: #FFFFFF;
+    --text-bright: rgba(255,255,255,1);
+    --text-body: rgba(255,255,255,0.6);
+    --text-muted: rgba(255,255,255,0.4);
+    --text-ghost: rgba(255,255,255,0.15);
+    --border-dim: rgba(255,255,255,0.06);
+    --border-light: rgba(255,255,255,0.1);
+    --border-medium: rgba(255,255,255,0.15);
+    --shadow: 0 2px 20px rgba(0,0,0,0.3);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.4);
+    --radius: 0px;
+    --radius-sm: 0px;
+    --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+
+    /* Component colors */
+    --erkennen: #5A8FD4;
+    --erkennen-light: rgba(90, 143, 212, 0.12);
+    --erkennen-border: rgba(90, 143, 212, 0.25);
+    --bereitschaft: #E63B2E;
+    --bereitschaft-light: rgba(230, 59, 46, 0.12);
+    --bereitschaft-border: rgba(230, 59, 46, 0.25);
+    --gestaltung: #5DB86C;
+    --gestaltung-light: rgba(93, 184, 108, 0.12);
+    --gestaltung-border: rgba(93, 184, 108, 0.25);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--night);
+    color: var(--text-bright);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  /* ─── PROGRESS BAR ─── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--border-dim);
+    z-index: 200;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--red), var(--yellow));
+    transition: width var(--transition);
+  }
+
+  /* ─── CONTAINER ─── */
+  .container {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* ─── SCREENS ─── */
+  .screen { display: none; animation: screenIn 0.4s ease; }
+  .screen.active { display: flex; flex-direction: column; flex: 1; }
+  @keyframes screenIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── WELCOME ─── */
+  .welcome-hero {
+    text-align: center;
+    padding: 60px 0 40px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .welcome-ghost {
+    position: absolute;
+    top: -10px; right: -20px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18vw;
+    line-height: 0.85;
+    color: rgba(255,255,255,0.015);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .welcome-kicker {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+  .welcome-hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.6rem;
+    line-height: 0.9;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .welcome-hero h1 span { color: var(--red); }
+  .welcome-hero .subtitle {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--text-body);
+    margin-bottom: 40px;
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+  }
+
+  .welcome-info {
+    background: var(--night-card);
+    border-left: 3px solid var(--red);
+    padding: 28px 28px 28px 28px;
+    text-align: left;
+    margin-bottom: 36px;
+    position: relative;
+    z-index: 1;
+  }
+  .welcome-info p {
+    margin-bottom: 14px;
+    color: var(--text-body);
+    font-size: 0.92rem;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+  .welcome-info p:last-of-type { margin-bottom: 0; }
+  .welcome-info strong { font-weight: 500; color: var(--text-bright); }
+  .welcome-info em { color: var(--yellow); font-style: normal; font-weight: 500; }
+
+  .welcome-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-dim);
+  }
+  .welcome-meta span {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+  .welcome-meta strong {
+    color: var(--text-bright);
+    font-weight: 600;
+  }
+
+  /* ─── COMPONENT INTRO ─── */
+  .component-intro {
+    text-align: center;
+    padding: 48px 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .component-badge {
+    font-family: 'Space Mono', monospace;
+    display: inline-block;
+    padding: 6px 16px;
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .badge-erkennen { background: var(--erkennen-light); color: var(--erkennen); border: 1px solid var(--erkennen-border); }
+  .badge-bereitschaft { background: var(--bereitschaft-light); color: var(--bereitschaft); border: 1px solid var(--bereitschaft-border); }
+  .badge-gestaltung { background: var(--gestaltung-light); color: var(--gestaltung); border: 1px solid var(--gestaltung-border); }
+  .component-intro h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    color: var(--white);
+  }
+  .component-intro p {
+    color: var(--text-body);
+    max-width: 480px;
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* ─── QUESTION SCREEN ─── */
+  .question-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 24px 0;
+  }
+  .question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+  }
+  .question-counter {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+  .question-capability {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    padding: 4px 14px;
+    letter-spacing: 0.5px;
+  }
+
+  .question-prompt {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  /* ─── FOUR-FIELD SCALE ─── */
+  .scale-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .scale-statements {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .scale-statement {
+    background: var(--night-card);
+    border: 1px solid var(--border-dim);
+    padding: 20px 22px;
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--text-body);
+    transition: all var(--transition);
+  }
+  .scale-statement-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: block;
+    color: var(--text-muted);
+  }
+
+  .scale-statement.highlight-left {
+    border-color: var(--border-medium);
+    background: var(--night-card-hover);
+  }
+  .scale-statement.highlight-right {
+    border-color: var(--border-medium);
+    background: var(--night-card-hover);
+  }
+
+  /* The scale bar */
+  .scale-bar-wrap {
+    position: relative;
+    padding: 0;
+  }
+
+  .scale-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 3px;
+  }
+
+  .scale-segment {
+    height: 56px;
+    border: 1px solid var(--border-dim);
+    background: var(--night-card);
+    cursor: pointer;
+    transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    user-select: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .scale-segment:hover {
+    border-color: var(--red-20);
+    background: var(--red-04);
+    color: var(--text-body);
+    transform: translateY(-2px);
+  }
+
+  .scale-segment.selected {
+    border-color: var(--red);
+    background: var(--red-12);
+    color: var(--red);
+    font-weight: 500;
+    box-shadow: 0 0 24px var(--red-08);
+    transform: translateY(-2px);
+  }
+
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  .scale-label-hint {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--text-ghost);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ─── Mobile: compact labels in scale segments ─── */
+  .scale-segment .label-full { display: inline; }
+  .scale-segment .label-short { display: none; }
+
+  /* ─── COMPONENT SUMMARY ─── */
+  .component-summary {
+    text-align: center;
+    padding: 48px 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .component-summary h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 14px;
+  }
+  .summary-scores {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 28px 0;
+    width: 100%;
+    max-width: 500px;
+  }
+  .summary-score-card {
+    background: var(--night-card);
+    padding: 20px;
+    border: 1px solid var(--border-dim);
+  }
+  .summary-score-card .label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .summary-score-card .value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 1px;
+  }
+  .summary-score-card .bar-track {
+    height: 3px;
+    background: var(--border-dim);
+    margin-top: 10px;
+    overflow: hidden;
+  }
+  .summary-score-card .bar-fill {
+    height: 100%;
+    transition: width 0.8s ease;
+  }
+
+  /* ─── RESULTS ─── */
+  .results-section { padding: 40px 0; }
+  .score-hero {
+    text-align: center;
+    padding: 48px 0 36px;
+  }
+  .score-circle-outer {
+    width: 170px; height: 170px;
+    border-radius: 0;
+    background: linear-gradient(135deg, var(--red), var(--yellow));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+  .score-circle-inner {
+    width: 140px; height: 140px;
+    background: var(--night);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+  .score-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.2rem;
+    color: var(--white);
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+  .score-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+  .score-hero h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .score-hero .score-sub {
+    color: var(--text-muted);
+    margin-top: 6px;
+    font-weight: 300;
+    font-size: 0.9rem;
+  }
+
+  .result-card {
+    background: var(--night-card);
+    border: 1px solid var(--border-dim);
+    padding: 32px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .result-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .radar-canvas-wrap {
+    display: flex;
+    justify-content: center;
+  }
+
+  .profile-section { margin-bottom: 20px; }
+  .profile-section:last-child { margin-bottom: 0; }
+  .profile-section h4 {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+  .profile-section p {
+    color: var(--text-body);
+    font-size: 0.92rem;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  .strength-tag, .dev-tag {
+    display: inline-block;
+    padding: 5px 14px;
+    font-size: 0.8rem;
+    font-weight: 400;
+    margin: 3px 4px 3px 0;
+  }
+  .strength-tag {
+    background: var(--gestaltung-light);
+    color: var(--gestaltung);
+    border: 1px solid var(--gestaltung-border);
+  }
+  .dev-tag {
+    background: var(--bereitschaft-light);
+    color: var(--bereitschaft);
+    border: 1px solid var(--bereitschaft-border);
+  }
+
+  .deepdive-cta {
+    background: var(--night-card);
+    border: 1.5px dashed var(--border-light);
+    padding: 32px;
+    text-align: center;
+  }
+  .deepdive-cta h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .deepdive-cta p {
+    color: var(--text-body);
+    font-size: 0.88rem;
+    font-weight: 300;
+    margin-bottom: 18px;
+    line-height: 1.7;
+  }
+  .deepdive-cta .coming-soon {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-ghost);
+    margin-top: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* ─── BUTTONS ─── */
+  .btn {
+    display: inline-block;
+    padding: 14px 32px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .btn-primary {
+    background: var(--red);
+    color: var(--white);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px var(--red-20);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-bright);
+    border: 1px solid var(--border-light);
+  }
+  .btn-secondary:hover {
+    border-color: var(--red-20);
+    background: var(--red-04);
+  }
+
+  .footer-actions {
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px; }
+    .welcome-hero h1 { font-size: 2.6rem; }
+    .welcome-meta { flex-direction: column; gap: 10px; }
+    .scale-statements { grid-template-columns: 1fr; }
+
+    /* CRITICAL: Keep all 4 segments in ONE ROW to avoid A/B confusion */
+    .scale-bar {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 2px;
+    }
+    .scale-segment {
+      height: 52px;
+      font-size: 0.68rem;
+      padding: 4px 2px;
+      line-height: 1.3;
+    }
+    .scale-segment .label-full { display: none; }
+    .scale-segment .label-short { display: inline; }
+
+    .scale-labels { margin-top: 8px; }
+    .scale-label-hint { font-size: 0.58rem; }
+
+    .summary-scores { grid-template-columns: 1fr; }
+    .score-circle-outer { width: 140px; height: 140px; }
+    .score-circle-inner { width: 115px; height: 115px; }
+    .score-number { font-size: 2.6rem; }
+    .component-intro h2 { font-size: 2rem; }
+    .question-prompt { font-size: 1.2rem; }
+  }
+
+  @media (max-width: 380px) {
+    .scale-segment { height: 48px; font-size: 0.62rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="container">
+
+  <!-- ── WELCOME ── -->
+  <div class="screen active" id="screen-welcome">
+    <div class="welcome-hero">
+      <div class="welcome-ghost">I²Q</div>
+      <p class="welcome-kicker">Self-Assessment</p>
+      <h1>I²Q<br><span>Innovations&shy;intelligenz</span></h1>
+      <p class="subtitle">Entdecke dein persönliches Profil im Umgang mit Ungewissheit, Exploration und Innovation.</p>
+
+      <div class="welcome-info">
+        <p>Dieses Assessment zeigt dir, wie du mit Ungewissheit, Exploration und Innovation umgehst — auf drei Ebenen: Wie du Situationen <strong>erkennst</strong>, ob du emotional <strong>bereit</strong> bist, und wie du deinen Kontext <strong>gestaltest</strong>.</p>
+        <p>Du siehst jeweils zwei Aussagen. Wähle auf der Skala dazwischen, welche besser zu dir passt — und wie stark. <em>Ein Klick genügt.</em></p>
+        <div class="welcome-meta">
+          <span><strong>24</strong> Fragen</span>
+          <span><strong>~8</strong> Minuten</span>
+          <span><strong>12</strong> Fähigkeiten</span>
+        </div>
+      </div>
+
+      <div class="footer-actions">
+        <button class="btn btn-primary" onclick="startAssessment()">Assessment starten</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COMPONENT INTROS ── -->
+  <div class="screen" id="screen-intro-erkennen">
+    <div class="component-intro">
+      <span class="component-badge badge-erkennen">Komponente 1 von 3</span>
+      <h2>Erkennen</h2>
+      <p>Die kognitive Komponente: Kannst du erkennen, ob eine Situation mit bekannten Regeln funktioniert — oder ob du dich auf unbekanntem Terrain bewegst?</p>
+      <div class="footer-actions" style="margin-top:36px">
+        <button class="btn btn-primary" onclick="startComponent('erkennen')">Weiter</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-intro-bereitschaft">
+    <div class="component-intro">
+      <span class="component-badge badge-bereitschaft">Komponente 2 von 3</span>
+      <h2>Bereitschaft</h2>
+      <p>Die emotionale Komponente: Bist du innerlich verfügbar, dich auf das Unbekannte einzulassen — auch wenn es bedeutet, deinen Expertenstatus loszulassen?</p>
+      <div class="footer-actions" style="margin-top:36px">
+        <button class="btn btn-primary" onclick="startComponent('bereitschaft')">Weiter</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-intro-gestaltung">
+    <div class="component-intro">
+      <span class="component-badge badge-gestaltung">Komponente 3 von 3</span>
+      <h2>Gestaltung</h2>
+      <p>Die kontextuelle Komponente: Kannst du für dich und andere die Bedingungen schaffen, unter denen Exploration möglich wird?</p>
+      <div class="footer-actions" style="margin-top:36px">
+        <button class="btn btn-primary" onclick="startComponent('gestaltung')">Weiter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── QUESTION SCREEN ── -->
+  <div class="screen" id="screen-question">
+    <div class="question-wrapper">
+      <div class="question-header">
+        <span class="question-counter" id="questionCounter">Frage 1 von 24</span>
+        <span class="question-capability" id="questionCapability">Welterkennung</span>
+      </div>
+
+      <p class="question-prompt">Welche Aussage passt besser — und wie stark?</p>
+
+      <div class="scale-container">
+        <div class="scale-statements">
+          <div class="scale-statement statement-left" id="statementLeft">
+            <span class="scale-statement-label" id="labelLeft">A</span>
+            <span id="statementLeftText"></span>
+          </div>
+          <div class="scale-statement statement-right" id="statementRight">
+            <span class="scale-statement-label" id="labelRight">B</span>
+            <span id="statementRightText"></span>
+          </div>
+        </div>
+
+        <div class="scale-bar-wrap">
+          <div class="scale-bar" id="scaleBar">
+            <div class="scale-segment seg-a" id="seg0" onclick="selectScale(0)" onmouseenter="hoverScale(0)" onmouseleave="unhoverScale()">
+              <span class="label-full">Deutlich A</span><span class="label-short">A ++</span>
+            </div>
+            <div class="scale-segment seg-a" id="seg1" onclick="selectScale(1)" onmouseenter="hoverScale(1)" onmouseleave="unhoverScale()">
+              <span class="label-full">Eher A</span><span class="label-short">A +</span>
+            </div>
+            <div class="scale-segment seg-b" id="seg2" onclick="selectScale(2)" onmouseenter="hoverScale(2)" onmouseleave="unhoverScale()">
+              <span class="label-full">Eher B</span><span class="label-short">B +</span>
+            </div>
+            <div class="scale-segment seg-b" id="seg3" onclick="selectScale(3)" onmouseenter="hoverScale(3)" onmouseleave="unhoverScale()">
+              <span class="label-full">Deutlich B</span><span class="label-short">B ++</span>
+            </div>
+          </div>
+          <div class="scale-labels">
+            <span class="scale-label-hint">← Aussage A</span>
+            <span class="scale-label-hint">Aussage B →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COMPONENT SUMMARIES ── -->
+  <div class="screen" id="screen-summary-erkennen">
+    <div class="component-summary">
+      <span class="component-badge badge-erkennen">Erkennen — Zwischenergebnis</span>
+      <h2>Dein Erkennen-Profil</h2>
+      <div class="summary-scores" id="summaryErkennen"></div>
+      <div class="footer-actions" style="margin-top:28px">
+        <button class="btn btn-primary" onclick="showScreen('screen-intro-bereitschaft')">Weiter zu Bereitschaft</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-summary-bereitschaft">
+    <div class="component-summary">
+      <span class="component-badge badge-bereitschaft">Bereitschaft — Zwischenergebnis</span>
+      <h2>Dein Bereitschafts-Profil</h2>
+      <div class="summary-scores" id="summaryBereitschaft"></div>
+      <div class="footer-actions" style="margin-top:28px">
+        <button class="btn btn-primary" onclick="showScreen('screen-intro-gestaltung')">Weiter zu Gestaltung</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-summary-gestaltung">
+    <div class="component-summary">
+      <span class="component-badge badge-gestaltung">Gestaltung — Zwischenergebnis</span>
+      <h2>Dein Gestaltungs-Profil</h2>
+      <div class="summary-scores" id="summaryGestaltung"></div>
+      <div class="footer-actions" style="margin-top:28px">
+        <button class="btn btn-primary" onclick="showResults()">Gesamtergebnis anzeigen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── RESULTS ── -->
+  <div class="screen" id="screen-results">
+    <div class="results-section">
+      <div class="score-hero">
+        <div class="score-circle-outer">
+          <div class="score-circle-inner">
+            <span class="score-number" id="totalScore">0</span>
+            <span class="score-label">I²Q Score</span>
+          </div>
+        </div>
+        <h2>Dein I²Q-Fingerabdruck</h2>
+        <p class="score-sub">Innovation Intelligence Quotient</p>
+      </div>
+
+      <div class="result-card">
+        <h3>Fähigkeitsprofil</h3>
+        <div class="radar-canvas-wrap">
+          <canvas id="radarChart" width="440" height="440"></canvas>
+        </div>
+      </div>
+
+      <div class="result-card">
+        <h3>Dein Profil</h3>
+        <div class="profile-section">
+          <h4 style="color:var(--gestaltung)">Deine Stärken</h4>
+          <div id="strengthsList"></div>
+        </div>
+        <div class="profile-section">
+          <h4 style="color:var(--bereitschaft)">Entwicklungsfelder</h4>
+          <div id="devList"></div>
+        </div>
+        <div class="profile-section" id="profileNarrative">
+          <h4 style="color:var(--white)">Was das bedeutet</h4>
+          <p id="narrativeText"></p>
+        </div>
+      </div>
+
+      <div class="deepdive-cta">
+        <h3>Vertiefung freischalten</h3>
+        <p>Möchtest du deine zwei bis drei auffälligsten Bereiche mit situativen Szenarien vertiefen? Das dauert weitere 5–8 Minuten und liefert gezieltere Erkenntnisse für dein Coaching-Gespräch.</p>
+        <button class="btn btn-secondary" style="opacity:0.5;cursor:default">Vertiefung starten</button>
+        <p class="coming-soon">Kommt demnächst</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const capabilities = {
+  erkennen: [
+    { id: 'welterkennung', label: 'Welterkennung', color: 'erkennen' },
+    { id: 'werkzeugpassung', label: 'Werkzeugpassung', color: 'erkennen' },
+    { id: 'mustererkennung', label: 'Mustererkennung', color: 'erkennen' },
+    { id: 'perspektivwechsel', label: 'Perspektivwechsel', color: 'erkennen' }
+  ],
+  bereitschaft: [
+    { id: 'statusflexibilitaet', label: 'Statusflexibilität', color: 'bereitschaft' },
+    { id: 'ambiguitaetstoleranz', label: 'Ambiguitätstoleranz', color: 'bereitschaft' },
+    { id: 'explorationsresilienz', label: 'Explorationsresilienz', color: 'bereitschaft' },
+    { id: 'entdeckerfreude', label: 'Entdeckerfreude', color: 'bereitschaft' }
+  ],
+  gestaltung: [
+    { id: 'erlaubnissensibilitaet', label: 'Erlaubnissensibilität', color: 'gestaltung' },
+    { id: 'erlaubnisgestaltung', label: 'Erlaubnisgestaltung', color: 'gestaltung' },
+    { id: 'schutzraumkompetenz', label: 'Schutzraumkompetenz', color: 'gestaltung' },
+    { id: 'uebersetzungsfaehigkeit', label: 'Übersetzungsfähigkeit', color: 'gestaltung' }
+  ]
+};
+
+const questions = [
+  // === ERKENNEN ===
+  { capId: 'welterkennung', component: 'erkennen',
+    a: 'Wenn mir ein neues Thema auf den Tisch kommt, suche ich zuerst nach vergleichbaren Situationen aus meiner Erfahrung.',
+    b: 'Wenn mir ein neues Thema auf den Tisch kommt, frage ich mich zuerst, ob meine bisherigen Erfahrungen hier überhaupt greifen.' },
+  { capId: 'welterkennung', component: 'erkennen',
+    a: 'Ich fühle mich sicher, wenn ich auch für völlig neue Vorhaben einen klaren Plan habe.',
+    b: 'Bei völlig neuen Vorhaben werde ich skeptisch, wenn der Plan zu schnell zu klar ist.' },
+  { capId: 'werkzeugpassung', component: 'erkennen',
+    a: 'Vor einer wichtigen Entscheidung in unklarem Terrain sammle ich lieber noch mehr Informationen.',
+    b: 'Vor einer wichtigen Entscheidung in unklarem Terrain baue ich lieber einen schnellen Test.' },
+  { capId: 'werkzeugpassung', component: 'erkennen',
+    a: 'Gründliche Analyse führt in den allermeisten Fällen zu besseren Entscheidungen.',
+    b: 'In manchen Situationen bringt ein schnelles Experiment mehr Klarheit als eine ausführliche Analyse.' },
+  { capId: 'mustererkennung', component: 'erkennen',
+    a: 'Wenn ein Kundeninterview überraschende Ergebnisse bringt, prüfe ich zuerst, ob die Stichprobe repräsentativ war.',
+    b: 'Wenn ein Kundeninterview überraschende Ergebnisse bringt, frage ich mich zuerst, was das für unsere Annahmen bedeutet.' },
+  { capId: 'mustererkennung', component: 'erkennen',
+    a: 'Widersprüchliche Datenpunkte verunsichern mich — ich suche nach der einen richtigen Erklärung.',
+    b: 'Widersprüchliche Datenpunkte machen mich neugierig — sie zeigen mir, wo mein Denkmodell nicht stimmt.' },
+  { capId: 'perspektivwechsel', component: 'erkennen',
+    a: 'Meine Fachexpertise hilft mir, auch in neuen Situationen schnell die richtigen Schlüsse zu ziehen.',
+    b: 'In wirklich neuen Situationen versuche ich bewusst, meine Fachexpertise beiseite zu legen und mit frischen Augen zu schauen.' },
+  { capId: 'perspektivwechsel', component: 'erkennen',
+    a: 'Wenn Fachfremde Ideen einbringen, ordne ich sie fachlich ein, damit die Diskussion produktiv bleibt.',
+    b: 'Wenn Fachfremde Ideen einbringen, höre ich besonders aufmerksam hin — sie sehen oft etwas, das Experten übersehen.' },
+  // === BEREITSCHAFT ===
+  { capId: 'statusflexibilitaet', component: 'bereitschaft',
+    a: 'Ich gebe ungern zu, dass ich etwas nicht weiß, weil mein Umfeld Orientierung von mir erwartet.',
+    b: 'Mir fällt es leicht zu sagen „Davon habe ich keine Ahnung" — auch vor meinem Team.' },
+  { capId: 'statusflexibilitaet', component: 'bereitschaft',
+    a: 'Ich ziehe Energie daraus, als Experte wahrgenommen zu werden.',
+    b: 'Ich kann gut damit umgehen, in einem Raum der Anfänger zu sein.' },
+  { capId: 'ambiguitaetstoleranz', component: 'bereitschaft',
+    a: 'Wenn nach zwei Meetings noch keine klare Richtung erkennbar ist, dränge ich auf eine Entscheidung.',
+    b: 'Wenn nach zwei Meetings noch keine klare Richtung erkennbar ist, sehe ich das als Zeichen, dass wir noch mehr lernen müssen.' },
+  { capId: 'ambiguitaetstoleranz', component: 'bereitschaft',
+    a: 'Offene Fragen belasten mich — ich arbeite am besten, wenn die Richtung klar ist.',
+    b: 'Offene Fragen motivieren mich — sie zeigen, dass es noch etwas zu entdecken gibt.' },
+  { capId: 'explorationsresilienz', component: 'bereitschaft',
+    a: 'Wenn nach zwei Wochen Recherche kein konkretes Ergebnis vorliegt, überdenke ich grundlegend den Ansatz.',
+    b: 'Wenn nach zwei Wochen Recherche kein konkretes Ergebnis vorliegt, schaue ich, was ich über das Problem gelernt habe — das ist der Fortschritt.' },
+  { capId: 'explorationsresilienz', component: 'bereitschaft',
+    a: 'Ich brauche sichtbare Fortschritte, um langfristig motiviert zu bleiben.',
+    b: 'Ich kann lange an etwas arbeiten, auch wenn der Fortschritt für andere unsichtbar ist.' },
+  { capId: 'entdeckerfreude', component: 'bereitschaft',
+    a: 'Innovation ist ein wichtiger Teil meiner Arbeit, den ich professionell und pflichtbewusst angehe.',
+    b: 'Innovation ist der Teil meiner Arbeit, der mich am meisten begeistert — unabhängig vom Ergebnis.' },
+  { capId: 'entdeckerfreude', component: 'bereitschaft',
+    a: 'Wenn ein Projekt in unbekanntes Terrain führt, spüre ich vor allem Verantwortung.',
+    b: 'Wenn ein Projekt in unbekanntes Terrain führt, spüre ich vor allem Neugier.' },
+  // === GESTALTUNG ===
+  { capId: 'erlaubnissensibilitaet', component: 'gestaltung',
+    a: 'Wenn Innovation im Team stockt, liegt das meistens an fehlenden Ressourcen oder Freigaben.',
+    b: 'Wenn Innovation im Team stockt, frage ich mich zuerst, ob es an der Struktur, der Teamkultur oder an einzelnen Personen liegt.' },
+  { capId: 'erlaubnissensibilitaet', component: 'gestaltung',
+    a: 'Die Gründe für Innovationsblockaden liegen auf der Hand — meist fehlt schlicht das Mandat.',
+    b: 'Ich merke oft, dass die offensichtliche Erklärung für Innovationsblockaden nicht die eigentliche Ursache ist.' },
+  { capId: 'erlaubnisgestaltung', component: 'gestaltung',
+    a: 'Ich warte auf gute Rahmenbedingungen, bevor ich mit etwas wirklich Neuem starte.',
+    b: 'Ich schaffe mir die Rahmenbedingungen für Neues selbst, auch wenn sie nicht perfekt sind.' },
+  { capId: 'erlaubnisgestaltung', component: 'gestaltung',
+    a: 'Für Innovation braucht es ein klares Mandat und Budget von oben.',
+    b: 'Ich finde Wege, Exploration zu ermöglichen, auch ohne formales Mandat.' },
+  { capId: 'schutzraumkompetenz', component: 'gestaltung',
+    a: 'Innovation sollte Teil des normalen Arbeitsalltags sein — separate Räume schaffen nur Parallelwelten.',
+    b: 'Für echte Exploration braucht es bewusst geschützte Räume mit eigenen Regeln — auch wenn sie temporär sind.' },
+  { capId: 'schutzraumkompetenz', component: 'gestaltung',
+    a: 'Mein Team muss lernen, Innovation neben dem Tagesgeschäft zu stemmen.',
+    b: 'Wenn mein Team an etwas Neuem arbeitet, schütze ich es aktiv vor operativen Anforderungen.' },
+  { capId: 'uebersetzungsfaehigkeit', component: 'gestaltung',
+    a: 'Explorationsergebnisse sollten in der Sprache präsentiert werden, die sie am treffendsten wiedergibt — auch wenn das ungewohnt klingt.',
+    b: 'Ich kann dieselbe Erkenntnis sowohl einem Innovationsteam als auch einem Vorstand vermitteln — jeweils in deren Sprache.' },
+  { capId: 'uebersetzungsfaehigkeit', component: 'gestaltung',
+    a: 'Es fällt mir schwer, explorative Erkenntnisse so aufzubereiten, dass sie in klassischen Entscheidungsgremien ankommen.',
+    b: 'Ich erzähle Explorationsergebnisse bewusst in zwei Versionen: eine für das Team und eine für die Entscheider.' }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let currentQuestionIndex = -1;
+let currentComponent = null;
+let answers = {};
+let displayOrder = [];
+let isAdvancing = false;
+
+questions.forEach((q, i) => {
+  displayOrder[i] = Math.random() < 0.5 ? 'normal' : 'flipped';
+});
+
+Object.values(capabilities).forEach(caps => {
+  caps.forEach(c => { answers[c.id] = []; });
+});
+
+const componentQuestionRanges = {
+  erkennen: [0, 7],
+  bereitschaft: [8, 15],
+  gestaltung: [16, 23]
+};
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+  const answered = Object.values(answers).flat().length;
+  document.getElementById('progressFill').style.width = ((answered / 24) * 100) + '%';
+}
+
+function startAssessment() { showScreen('screen-intro-erkennen'); }
+
+function startComponent(comp) {
+  currentComponent = comp;
+  currentQuestionIndex = componentQuestionRanges[comp][0];
+  showQuestion();
+}
+
+// ============================================================
+// QUESTION DISPLAY
+// ============================================================
+function showQuestion() {
+  const q = questions[currentQuestionIndex];
+  const isFlipped = displayOrder[currentQuestionIndex] === 'flipped';
+  isAdvancing = false;
+
+  for (let i = 0; i < 4; i++) {
+    const el = document.getElementById('seg' + i);
+    el.className = 'scale-segment' + (i < 2 ? ' seg-a' : ' seg-b');
+  }
+
+  document.getElementById('statementLeftText').textContent = isFlipped ? q.b : q.a;
+  document.getElementById('statementRightText').textContent = isFlipped ? q.a : q.b;
+  document.getElementById('statementLeft').className = 'scale-statement statement-left';
+  document.getElementById('statementRight').className = 'scale-statement statement-right';
+
+  document.getElementById('questionCounter').textContent = `Frage ${currentQuestionIndex + 1} von 24`;
+  const capInfo = findCapability(q.capId);
+  const badge = document.getElementById('questionCapability');
+  badge.textContent = capInfo.label;
+  badge.className = 'question-capability badge-' + q.component;
+
+  showScreen('screen-question');
+}
+
+function findCapability(capId) {
+  for (const comp of Object.values(capabilities)) {
+    for (const c of comp) {
+      if (c.id === capId) return c;
+    }
+  }
+  return { label: capId, color: 'erkennen' };
+}
+
+// ============================================================
+// SCALE INTERACTION
+// ============================================================
+function hoverScale(segIndex) {
+  if (isAdvancing) return;
+  const leftEl = document.getElementById('statementLeft');
+  const rightEl = document.getElementById('statementRight');
+  leftEl.classList.remove('highlight-left');
+  rightEl.classList.remove('highlight-right');
+  if (segIndex <= 1) leftEl.classList.add('highlight-left');
+  else rightEl.classList.add('highlight-right');
+}
+
+function unhoverScale() {
+  document.getElementById('statementLeft').classList.remove('highlight-left');
+  document.getElementById('statementRight').classList.remove('highlight-right');
+}
+
+function selectScale(segIndex) {
+  if (isAdvancing) return;
+  isAdvancing = true;
+
+  const q = questions[currentQuestionIndex];
+  const isFlipped = displayOrder[currentQuestionIndex] === 'flipped';
+
+  document.getElementById('seg' + segIndex).classList.add('selected');
+  unhoverScale();
+  if (segIndex <= 1) document.getElementById('statementLeft').classList.add('highlight-left');
+  else document.getElementById('statementRight').classList.add('highlight-right');
+
+  const scoreMap = {
+    normal:  [1, 2, 3, 4],
+    flipped: [4, 3, 2, 1]
+  };
+  answers[q.capId].push(scoreMap[isFlipped ? 'flipped' : 'normal'][segIndex]);
+
+  setTimeout(() => { advanceQuestion(); }, 500);
+}
+
+function advanceQuestion() {
+  const range = componentQuestionRanges[currentComponent];
+  if (currentQuestionIndex >= range[1]) showComponentSummary(currentComponent);
+  else { currentQuestionIndex++; showQuestion(); }
+}
+
+// ============================================================
+// COMPONENT SUMMARY
+// ============================================================
+function showComponentSummary(comp) {
+  const caps = capabilities[comp];
+  const container = document.getElementById('summary' + comp.charAt(0).toUpperCase() + comp.slice(1));
+  container.innerHTML = '';
+
+  const compColors = {
+    erkennen: 'var(--erkennen)',
+    bereitschaft: 'var(--bereitschaft)',
+    gestaltung: 'var(--gestaltung)'
+  };
+
+  caps.forEach(cap => {
+    const scores = answers[cap.id];
+    const avg = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+    const pct = Math.round(((avg - 1) / 3) * 100);
+    const card = document.createElement('div');
+    card.className = 'summary-score-card';
+    card.innerHTML = `
+      <div class="label">${cap.label}</div>
+      <div class="value" style="color: ${compColors[comp]}">${pct}%</div>
+      <div class="bar-track"><div class="bar-fill" style="width: ${pct}%; background: ${compColors[comp]}"></div></div>
+    `;
+    container.appendChild(card);
+  });
+
+  showScreen('screen-summary-' + comp);
+}
+
+// ============================================================
+// RESULTS
+// ============================================================
+function showResults() {
+  const allCaps = [...capabilities.erkennen, ...capabilities.bereitschaft, ...capabilities.gestaltung];
+  const capScores = {};
+  let totalRaw = 0;
+
+  allCaps.forEach(cap => {
+    const scores = answers[cap.id];
+    const avg = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 2.5;
+    capScores[cap.id] = avg;
+    totalRaw += scores.reduce((a, b) => a + b, 0);
+  });
+
+  const i2qScore = Math.round(((totalRaw - 24) / 72) * 100);
+  document.getElementById('totalScore').textContent = i2qScore;
+
+  drawRadarChart(allCaps, capScores);
+
+  const ranked = allCaps.map(c => ({ ...c, score: capScores[c.id] })).sort((a, b) => b.score - a.score);
+  document.getElementById('strengthsList').innerHTML = ranked.slice(0, 3).map(s => `<span class="strength-tag">${s.label}</span>`).join('');
+  document.getElementById('devList').innerHTML = ranked.slice(-3).reverse().map(d => `<span class="dev-tag">${d.label}</span>`).join('');
+
+  const compScores = {
+    erkennen: capabilities.erkennen.reduce((sum, c) => sum + capScores[c.id], 0) / 4,
+    bereitschaft: capabilities.bereitschaft.reduce((sum, c) => sum + capScores[c.id], 0) / 4,
+    gestaltung: capabilities.gestaltung.reduce((sum, c) => sum + capScores[c.id], 0) / 4
+  };
+
+  document.getElementById('narrativeText').textContent = generateNarrative(compScores, ranked.slice(0, 3), ranked.slice(-3).reverse());
+  showScreen('screen-results');
+}
+
+function generateNarrative(compScores, strengths, devFields) {
+  const sorted = Object.entries(compScores).sort((a, b) => b[1] - a[1]);
+  const strongest = sorted[0][0], weakest = sorted[2][0];
+  const compNames = { erkennen: 'Erkennen', bereitschaft: 'Bereitschaft', gestaltung: 'Gestaltung' };
+  const compDescs = {
+    erkennen: 'Situationen kognitiv richtig einzuordnen',
+    bereitschaft: 'dich emotional auf Ungewissheit einzulassen',
+    gestaltung: 'den Kontext für Exploration aktiv zu gestalten'
+  };
+
+  let text = `Dein Profil zeigt eine besondere Stärke im Bereich ${compNames[strongest]} — die Fähigkeit, ${compDescs[strongest]}. `;
+  if (compScores[weakest] < 2.5) text += `Der Bereich ${compNames[weakest]} bietet das größte Entwicklungspotenzial: ${compDescs[weakest]} fällt dir aktuell schwerer. `;
+
+  if (compScores.erkennen > 3 && compScores.bereitschaft < 2.5) text += 'Du erkennst Innovationssituationen klar, aber die emotionale Bereitschaft, dich darauf einzulassen, ist noch ausbaufähig — das kann zu Frustration führen.';
+  else if (compScores.bereitschaft > 3 && compScores.gestaltung < 2.5) text += 'Du bist emotional bereit für Exploration, aber der Kontext lässt es nicht immer zu — hier liegt ein Hebel, der deine vorhandene Energie wirksam machen kann.';
+  else if (compScores.erkennen > 3 && compScores.gestaltung > 3 && compScores.bereitschaft < 2.5) text += 'Du verstehst die Situation und kannst den Kontext gestalten — aber die innere Erlaubnis, den Expertenstatus loszulassen, könnte der Schlüssel sein.';
+  else text += 'Die Stärken in deinem Profil bilden eine gute Grundlage — im Coaching-Gespräch lohnt es sich, gezielt an den Entwicklungsfeldern zu arbeiten.';
+
+  return text;
+}
+
+// ============================================================
+// RADAR CHART — GEOMETRIC STYLE
+// ============================================================
+function drawRadarChart(allCaps, capScores) {
+  const canvas = document.getElementById('radarChart');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+
+  canvas.width = 440 * dpr;
+  canvas.height = 440 * dpr;
+  canvas.style.width = '440px';
+  canvas.style.height = '440px';
+  ctx.scale(dpr, dpr);
+
+  const cx = 220, cy = 220, maxR = 170;
+  const n = allCaps.length;
+  const angleStep = (2 * Math.PI) / n;
+  const startAngle = -Math.PI / 2;
+
+  // Grid — sharp geometric polygons instead of circles
+  for (let r = 1; r <= 4; r++) {
+    const radius = (r / 4) * maxR;
+    ctx.beginPath();
+    for (let i = 0; i <= n; i++) {
+      const angle = startAngle + i * angleStep;
+      const x = cx + Math.cos(angle) * radius;
+      const y = cy + Math.sin(angle) * radius;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = r === 4 ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.04)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  const colors = {
+    erkennen: '#5A8FD4',
+    bereitschaft: '#E63B2E',
+    gestaltung: '#5DB86C'
+  };
+
+  // Grid lines and labels
+  allCaps.forEach((cap, i) => {
+    const angle = startAngle + i * angleStep;
+
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + Math.cos(angle) * maxR, cy + Math.sin(angle) * maxR);
+    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    const labelR = maxR + 28;
+    const labelX = cx + Math.cos(angle) * labelR;
+    const labelY = cy + Math.sin(angle) * labelR;
+
+    ctx.save();
+    ctx.fillStyle = colors[cap.color] || '#999';
+    ctx.font = '10.5px Inter, system-ui, sans-serif';
+    if (Math.abs(Math.cos(angle)) < 0.15) ctx.textAlign = 'center';
+    else if (Math.cos(angle) > 0) ctx.textAlign = 'left';
+    else ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(cap.label, labelX, labelY);
+    ctx.restore();
+  });
+
+  // Data polygon
+  ctx.beginPath();
+  allCaps.forEach((cap, i) => {
+    const angle = startAngle + i * angleStep;
+    const val = capScores[cap.id];
+    const r = (val / 4) * maxR;
+    const x = cx + Math.cos(angle) * r;
+    const y = cy + Math.sin(angle) * r;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.closePath();
+
+  // Fill — red/yellow gradient
+  const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR);
+  grad.addColorStop(0, 'rgba(230, 59, 46, 0.15)');
+  grad.addColorStop(0.6, 'rgba(255, 214, 0, 0.08)');
+  grad.addColorStop(1, 'rgba(230, 59, 46, 0.03)');
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  ctx.strokeStyle = 'rgba(230, 59, 46, 0.6)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Data points — square dots for geometric feel
+  allCaps.forEach((cap, i) => {
+    const angle = startAngle + i * angleStep;
+    const val = capScores[cap.id];
+    const r = (val / 4) * maxR;
+    const x = cx + Math.cos(angle) * r;
+    const y = cy + Math.sin(angle) * r;
+
+    ctx.fillStyle = colors[cap.color];
+    ctx.fillRect(x - 4, y - 4, 8, 8);
+    ctx.strokeStyle = 'rgba(11, 21, 40, 0.8)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x - 4, y - 4, 8, 8);
+  });
+
+  // Legend
+  ctx.font = '10px Inter, system-ui, sans-serif';
+  const legendY = 432;
+  const legends = [
+    { label: 'Erkennen', color: colors.erkennen, x: 100 },
+    { label: 'Bereitschaft', color: colors.bereitschaft, x: 210 },
+    { label: 'Gestaltung', color: colors.gestaltung, x: 330 }
+  ];
+  legends.forEach(l => {
+    ctx.fillStyle = l.color;
+    ctx.fillRect(l.x - 14, legendY - 6, 8, 8);
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(l.label, l.x, legendY);
+  });
+}
+</script>
+
+</body>
+</html>
