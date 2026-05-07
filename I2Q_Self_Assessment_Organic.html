@@ -604,19 +604,44 @@
     gap: 12px;
   }
 
+  /* ─── Mobile: compact labels in scale segments ─── */
+  .scale-segment .label-full { display: inline; }
+  .scale-segment .label-short { display: none; }
+
   /* ─── RESPONSIVE ─── */
   @media (max-width: 640px) {
     .container { padding: 20px 16px; }
     .welcome-hero h1 { font-size: 2rem; }
     .welcome-meta { flex-direction: column; gap: 10px; }
     .scale-statements { grid-template-columns: 1fr; }
-    .scale-bar { grid-template-columns: 1fr 1fr; gap: 8px; }
-    .scale-segment { height: 50px; font-size: 0.78rem; }
+
+    /* CRITICAL: Keep all 4 segments in ONE ROW to avoid A/B confusion */
+    .scale-bar {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 4px;
+    }
+    .scale-segment {
+      height: 52px;
+      font-size: 0.7rem;
+      padding: 4px 2px;
+      line-height: 1.3;
+    }
+    /* Show compact labels on mobile */
+    .scale-segment .label-full { display: none; }
+    .scale-segment .label-short { display: inline; }
+
+    .scale-labels { margin-top: 8px; }
+    .scale-label-hint { font-size: 0.58rem; }
+
     .summary-scores { grid-template-columns: 1fr; }
     .score-circle-outer { width: 140px; height: 140px; }
     .score-circle-inner { width: 115px; height: 115px; }
     .score-number { font-size: 2.4rem; }
     .component-intro h2 { font-size: 1.7rem; }
+  }
+
+  @media (max-width: 380px) {
+    .scale-segment { height: 48px; font-size: 0.65rem; }
   }
 </style>
 </head>
@@ -710,16 +735,16 @@
         <div class="scale-bar-wrap">
           <div class="scale-bar">
             <div class="scale-segment" id="seg0" onclick="selectScale(0)" onmouseenter="hoverScale(0)" onmouseleave="unhoverScale()">
-              Deutlich A
+              <span class="label-full">Deutlich A</span><span class="label-short">A ++</span>
             </div>
             <div class="scale-segment" id="seg1" onclick="selectScale(1)" onmouseenter="hoverScale(1)" onmouseleave="unhoverScale()">
-              Eher A
+              <span class="label-full">Eher A</span><span class="label-short">A +</span>
             </div>
             <div class="scale-segment" id="seg2" onclick="selectScale(2)" onmouseenter="hoverScale(2)" onmouseleave="unhoverScale()">
-              Eher B
+              <span class="label-full">Eher B</span><span class="label-short">B +</span>
             </div>
             <div class="scale-segment" id="seg3" onclick="selectScale(3)" onmouseenter="hoverScale(3)" onmouseleave="unhoverScale()">
-              Deutlich B
+              <span class="label-full">Deutlich B</span><span class="label-short">B ++</span>
             </div>
           </div>
           <div class="scale-labels">
