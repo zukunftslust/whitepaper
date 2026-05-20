@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>I²Q Self-Assessment — Zukunftslust</title>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
@@ -728,7 +729,7 @@
     #screen-results { display: block !important; }
 
     /* Hide interactive elements in print */
-    #downloadSection { display: none !important; }
+    #downloadSection, #contactSection { display: none !important; }
     .deepdive-cta { display: none !important; }
 
     /* Print header */
@@ -1010,6 +1011,10 @@
         </p>
         <div class="download-form">
           <div class="form-field">
+            <label class="form-label" for="nameInput">Name <span style="color:var(--text-ghost);font-weight:400">(optional)</span></label>
+            <input type="text" id="nameInput" class="form-input" placeholder="Dein Name" autocomplete="name">
+          </div>
+          <div class="form-field">
             <label class="form-label" for="emailInput">E-Mail-Adresse</label>
             <input type="email" id="emailInput" class="form-input" placeholder="deine@email.de" autocomplete="email">
             <span class="form-hint" id="emailHint"></span>
@@ -1021,6 +1026,7 @@
               <span class="checkbox-text">Bitte kontaktiere mich zu meinen Ergebnissen per Email</span>
             </label>
           </div>
+          <div id="turnstileWidget" style="margin-top:18px;"></div>
           <div class="footer-actions" style="margin-top:20px;justify-content:flex-start;">
             <button class="btn btn-primary" id="contactSubmitBtn" onclick="submitContact()" disabled>Absenden</button>
           </div>
@@ -1501,47 +1507,81 @@ function drawRadarChart(allCaps, capScores) {
 // ============================================================
 // EMAIL VALIDATION & CONTACT FORM
 // ============================================================
-// ── WEB3FORMS CONFIG ──
-// Trage hier deinen Web3Forms Access Key ein (https://web3forms.com)
 const WEB3FORMS_KEY = 'aa2b3b77-0335-4a96-8097-124e991973a2';
+const TURNSTILE_SITE_KEY = '0x4AAAAAADTRNu5nsuZjYB_A';
 
-(function() {
+let turnstileToken = null;
+let turnstileWidgetId = null;
+
+// ── Render Turnstile when results screen shows ──
+function initTurnstile() {
+  if (turnstileWidgetId !== null) return; // already rendered
+  if (typeof turnstile === 'undefined') {
+    // Turnstile API not loaded yet — retry
+    setTimeout(initTurnstile, 500);
+    return;
+  }
+  turnstileWidgetId = turnstile.render('#turnstileWidget', {
+    sitekey: TURNSTILE_SITE_KEY,
+    theme: 'dark',
+    callback: function(token) {
+      turnstileToken = token;
+      updateSubmitState();
+    },
+    'expired-callback': function() {
+      turnstileToken = null;
+      updateSubmitState();
+    },
+    'error-callback': function() {
+      turnstileToken = null;
+      updateSubmitState();
+    }
+  });
+}
+
+// ── Validation ──
+function validateEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function updateSubmitState() {
   const emailInput = document.getElementById('emailInput');
   const submitBtn = document.getElementById('contactSubmitBtn');
   const emailHint = document.getElementById('emailHint');
+  const emailVal = emailInput.value.trim();
+  const emailValid = validateEmail(emailVal);
 
-  function validateEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  // Button requires: valid email + Turnstile token
+  submitBtn.disabled = !(emailValid && turnstileToken);
+
+  // Visual feedback on email field
+  if (emailVal.length > 0 && !emailValid) {
+    emailInput.classList.add('invalid');
+    emailInput.classList.remove('valid');
+    emailHint.textContent = 'Bitte gib eine gültige E-Mail-Adresse ein.';
+  } else if (emailValid) {
+    emailInput.classList.remove('invalid');
+    emailInput.classList.add('valid');
+    emailHint.textContent = '';
+  } else {
+    emailInput.classList.remove('invalid', 'valid');
+    emailHint.textContent = '';
   }
+}
 
-  function updateButtonState() {
-    const valid = validateEmail(emailInput.value.trim());
-    submitBtn.disabled = !valid;
-    if (emailInput.value.trim().length > 0 && !valid) {
-      emailInput.classList.add('invalid');
-      emailInput.classList.remove('valid');
-      emailHint.textContent = 'Bitte gib eine gültige E-Mail-Adresse ein.';
-    } else if (valid) {
-      emailInput.classList.remove('invalid');
-      emailInput.classList.add('valid');
-      emailHint.textContent = '';
-    } else {
-      emailInput.classList.remove('invalid', 'valid');
-      emailHint.textContent = '';
-    }
-  }
-
-  emailInput.addEventListener('input', updateButtonState);
-  emailInput.addEventListener('blur', updateButtonState);
+(function() {
+  const emailInput = document.getElementById('emailInput');
+  emailInput.addEventListener('input', updateSubmitState);
+  emailInput.addEventListener('blur', updateSubmitState);
 })();
 
-// ── Print date ──
+// ── Print date + Turnstile init ──
 function showResults() {
-  // (original showResults logic is above — this just adds the print date)
   document.getElementById('printDate').textContent =
     new Date().toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' });
-  // call the real showResults
   _showResults();
+  // Init Turnstile after results are visible
+  setTimeout(initTurnstile, 300);
 }
 
 // ── Collect results as text for email ──
@@ -1588,8 +1628,16 @@ function getResultsSummary() {
 async function submitContact() {
   const btn = document.getElementById('contactSubmitBtn');
   const feedback = document.getElementById('submitFeedback');
+  const name = document.getElementById('nameInput').value.trim();
   const email = document.getElementById('emailInput').value.trim();
   const wantsContact = document.getElementById('contactCheckbox').checked;
+
+  if (!turnstileToken) {
+    feedback.className = 'submit-feedback error';
+    feedback.textContent = 'Bitte bestätige zuerst die Sicherheitsabfrage.';
+    feedback.style.display = 'block';
+    return;
+  }
 
   btn.disabled = true;
   btn.textContent = 'Wird gesendet …';
@@ -1600,9 +1648,11 @@ async function submitContact() {
 
   const payload = {
     access_key: WEB3FORMS_KEY,
-    subject: 'I²Q Assessment — Neue Kontaktanfrage',
-    from_name: 'I²Q Self-Assessment',
+    subject: 'I²Q Assessment — Neue Kontaktanfrage' + (name ? ' von ' + name : ''),
+    from_name: name || 'I²Q Self-Assessment',
     email: email,
+    name: name || '(nicht angegeben)',
+    'cf-turnstile-response': turnstileToken,
     message: [
       wantsContact ? '✓ Nutzer wünscht Kontakt zu seinen Ergebnissen' : '(Kein Kontaktwunsch angekreuzt)',
       '',
@@ -1610,6 +1660,7 @@ async function submitContact() {
       resultsSummary,
       '',
       '─── KONTAKT ───',
+      `Name: ${name || '(nicht angegeben)'}`,
       `Email: ${email}`,
       `Datum: ${new Date().toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}`
     ].join('\n')
@@ -1626,7 +1677,7 @@ async function submitContact() {
 
     if (data.success) {
       feedback.className = 'submit-feedback success';
-      feedback.textContent = 'Danke! Deine Anfrage wurde gesendet. Wir melden uns bei dir.';
+      feedback.textContent = 'Danke' + (name ? ', ' + name : '') + '! Deine Anfrage wurde gesendet. Wir melden uns bei dir.';
       feedback.style.display = 'block';
       btn.textContent = 'Gesendet';
     } else {
@@ -1639,6 +1690,11 @@ async function submitContact() {
     feedback.style.display = 'block';
     btn.disabled = false;
     btn.textContent = 'Absenden';
+    // Reset Turnstile for retry
+    if (typeof turnstile !== 'undefined' && turnstileWidgetId !== null) {
+      turnstile.reset(turnstileWidgetId);
+      turnstileToken = null;
+    }
   }
 }
 </script>
