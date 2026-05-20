@@ -486,6 +486,11 @@
   .radar-canvas-wrap {
     display: flex;
     justify-content: center;
+    overflow: hidden;
+  }
+  .radar-canvas-wrap canvas {
+    max-width: 100%;
+    height: auto !important;
   }
 
   .profile-section { margin-bottom: 20px; }
@@ -590,6 +595,92 @@
   }
 
   /* ─── RESPONSIVE ─── */
+  /* ─── DOWNLOAD FORM ─── */
+  .download-form { max-width: 480px; }
+  .form-field { margin-bottom: 18px; }
+  .form-label {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .form-input {
+    width: 100%;
+    background: var(--night-light);
+    border: 1px solid var(--border-light);
+    color: var(--text-bright);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 300;
+    padding: 14px 16px;
+    outline: none;
+    transition: border-color var(--transition);
+  }
+  .form-input::placeholder { color: var(--text-ghost); }
+  .form-input:focus { border-color: var(--red); }
+  .form-input.invalid { border-color: var(--bereitschaft); }
+  .form-input.valid { border-color: var(--gestaltung); }
+  .form-hint {
+    display: block;
+    font-size: 0.78rem;
+    margin-top: 6px;
+    min-height: 18px;
+    color: var(--bereitschaft);
+  }
+
+  .form-checkbox-wrap { margin-bottom: 8px; }
+  .checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .checkbox-label input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0; height: 0;
+  }
+  .checkbox-custom {
+    flex-shrink: 0;
+    width: 20px; height: 20px;
+    border: 1px solid var(--border-light);
+    background: var(--night-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition);
+    margin-top: 1px;
+  }
+  .checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
+    background: var(--red);
+    border-color: var(--red);
+  }
+  .checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+    content: '';
+    width: 5px; height: 10px;
+    border: solid var(--white);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+  }
+  .checkbox-text {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--text-body);
+    line-height: 1.5;
+  }
+
+  #contactSubmitBtn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
   @media (max-width: 640px) {
     .container { padding: 20px 16px; }
     .welcome-hero h1 { font-size: 2.6rem; }
@@ -623,6 +714,96 @@
 
   @media (max-width: 380px) {
     .scale-segment { height: 48px; font-size: 0.62rem; }
+  }
+
+  /* ─── PRINT STYLES ─── */
+  @media print {
+    *, *::before, *::after { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    @page { size: A4 portrait; margin: 12mm 14mm; }
+    body { background: var(--night) !important; }
+    .progress-bar { display: none !important; }
+
+    /* Hide everything except results */
+    .screen { display: none !important; }
+    #screen-results { display: block !important; }
+
+    /* Hide interactive elements in print */
+    #downloadSection { display: none !important; }
+    .deepdive-cta { display: none !important; }
+
+    /* Print header */
+    .print-header { display: flex !important; }
+
+    /* Layout tweaks for print */
+    .container { max-width: 100%; padding: 0; }
+    .results-section { padding: 0; }
+    .score-hero { padding: 20px 0 16px; }
+    .score-circle-outer { width: 120px; height: 120px; }
+    .score-circle-inner { width: 100px; height: 100px; }
+    .score-number { font-size: 2.4rem; }
+    .result-card { padding: 20px; margin-bottom: 12px; break-inside: avoid; }
+    .radar-canvas-wrap canvas { max-width: 420px; }
+    .profile-section { margin-bottom: 14px; }
+
+    /* Print footer */
+    .print-footer { display: block !important; }
+  }
+
+  /* Hidden by default, shown only in print */
+  .print-header, .print-footer { display: none; }
+  .print-header {
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 14px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid var(--red);
+  }
+  .print-header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .print-header h1 span { color: var(--red); }
+  .print-header .print-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+  .print-footer {
+    margin-top: 20px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-dim);
+    text-align: center;
+  }
+  .print-footer p {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+  }
+
+  /* ─── FORM FEEDBACK ─── */
+  .submit-feedback {
+    margin-top: 14px;
+    padding: 14px 18px;
+    font-size: 0.88rem;
+    font-weight: 400;
+    line-height: 1.5;
+    display: none;
+  }
+  .submit-feedback.success {
+    display: block;
+    background: var(--gestaltung-light);
+    border: 1px solid var(--gestaltung-border);
+    color: var(--gestaltung);
+  }
+  .submit-feedback.error {
+    display: block;
+    background: var(--bereitschaft-light);
+    border: 1px solid var(--bereitschaft-border);
+    color: var(--bereitschaft);
   }
 </style>
 </head>
@@ -773,6 +954,10 @@
   <!-- ── RESULTS ── -->
   <div class="screen" id="screen-results">
     <div class="results-section">
+      <div class="print-header">
+        <h1>I²Q <span>Profil</span></h1>
+        <span class="print-date" id="printDate"></span>
+      </div>
       <div class="score-hero">
         <div class="score-circle-outer">
           <div class="score-circle-inner">
@@ -787,7 +972,7 @@
       <div class="result-card">
         <h3>Fähigkeitsprofil</h3>
         <div class="radar-canvas-wrap">
-          <canvas id="radarChart" width="440" height="440"></canvas>
+          <canvas id="radarChart" width="600" height="580"></canvas>
         </div>
       </div>
 
@@ -807,11 +992,51 @@
         </div>
       </div>
 
+      <!-- ── SAVE & CONTACT SECTION ── -->
+      <div class="result-card" id="downloadSection">
+        <h3>Ergebnisse speichern</h3>
+        <p style="color:var(--text-body);font-size:0.92rem;font-weight:300;line-height:1.7;margin-bottom:24px;">
+          Speichere dein I²Q-Profil als PDF — dein Browser öffnet die Druckvorschau, dort wählst du „Als PDF speichern".
+        </p>
+        <div class="footer-actions" style="justify-content:flex-start;">
+          <button class="btn btn-primary" onclick="window.print()">Als PDF speichern</button>
+        </div>
+      </div>
+
+      <div class="result-card" id="contactSection">
+        <h3>Ergebnisse besprechen</h3>
+        <p style="color:var(--text-body);font-size:0.92rem;font-weight:300;line-height:1.7;margin-bottom:24px;">
+          Möchtest du deine Ergebnisse mit einem Coach besprechen? Hinterlasse deine Email-Adresse — wir melden uns bei dir.
+        </p>
+        <div class="download-form">
+          <div class="form-field">
+            <label class="form-label" for="emailInput">E-Mail-Adresse</label>
+            <input type="email" id="emailInput" class="form-input" placeholder="deine@email.de" autocomplete="email">
+            <span class="form-hint" id="emailHint"></span>
+          </div>
+          <div class="form-checkbox-wrap">
+            <label class="checkbox-label" for="contactCheckbox">
+              <input type="checkbox" id="contactCheckbox">
+              <span class="checkbox-custom"></span>
+              <span class="checkbox-text">Bitte kontaktiere mich zu meinen Ergebnissen per Email</span>
+            </label>
+          </div>
+          <div class="footer-actions" style="margin-top:20px;justify-content:flex-start;">
+            <button class="btn btn-primary" id="contactSubmitBtn" onclick="submitContact()" disabled>Absenden</button>
+          </div>
+          <div class="submit-feedback" id="submitFeedback"></div>
+        </div>
+      </div>
+
       <div class="deepdive-cta">
         <h3>Vertiefung freischalten</h3>
         <p>Möchtest du deine zwei bis drei auffälligsten Bereiche mit situativen Szenarien vertiefen? Das dauert weitere 5–8 Minuten und liefert gezieltere Erkenntnisse für dein Coaching-Gespräch.</p>
         <button class="btn btn-secondary" style="opacity:0.5;cursor:default">Vertiefung starten</button>
         <p class="coming-soon">Kommt demnächst</p>
+      </div>
+
+      <div class="print-footer">
+        <p>zukunftslust.com — I²Q Self-Assessment</p>
       </div>
     </div>
   </div>
@@ -1082,7 +1307,7 @@ function showComponentSummary(comp) {
 // ============================================================
 // RESULTS
 // ============================================================
-function showResults() {
+function _showResults() {
   const allCaps = [...capabilities.erkennen, ...capabilities.bereitschaft, ...capabilities.gestaltung];
   const capScores = {};
   let totalRaw = 0;
@@ -1142,18 +1367,19 @@ function drawRadarChart(allCaps, capScores) {
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
 
-  canvas.width = 440 * dpr;
-  canvas.height = 440 * dpr;
-  canvas.style.width = '440px';
-  canvas.style.height = '440px';
+  const cw = 600, ch = 580;
+  canvas.width = cw * dpr;
+  canvas.height = ch * dpr;
+  canvas.style.width = cw + 'px';
+  canvas.style.height = ch + 'px';
   ctx.scale(dpr, dpr);
 
-  const cx = 220, cy = 220, maxR = 170;
+  const cx = cw / 2, cy = 270, maxR = 160;
   const n = allCaps.length;
   const angleStep = (2 * Math.PI) / n;
   const startAngle = -Math.PI / 2;
 
-  // Grid — sharp geometric polygons instead of circles
+  // Grid — sharp geometric polygons
   for (let r = 1; r <= 4; r++) {
     const radius = (r / 4) * maxR;
     ctx.beginPath();
@@ -1187,17 +1413,29 @@ function drawRadarChart(allCaps, capScores) {
     ctx.lineWidth = 1;
     ctx.stroke();
 
-    const labelR = maxR + 28;
+    const labelR = maxR + 20;
     const labelX = cx + Math.cos(angle) * labelR;
     const labelY = cy + Math.sin(angle) * labelR;
 
     ctx.save();
     ctx.fillStyle = colors[cap.color] || '#999';
-    ctx.font = '10.5px Inter, system-ui, sans-serif';
-    if (Math.abs(Math.cos(angle)) < 0.15) ctx.textAlign = 'center';
-    else if (Math.cos(angle) > 0) ctx.textAlign = 'left';
-    else ctx.textAlign = 'right';
-    ctx.textBaseline = 'middle';
+    ctx.font = '500 10px Inter, system-ui, sans-serif';
+
+    // Smart alignment: push labels outward so they don't overlap the polygon
+    const cosA = Math.cos(angle);
+    const sinA = Math.sin(angle);
+    if (Math.abs(cosA) < 0.15) {
+      ctx.textAlign = 'center';
+    } else if (cosA > 0) {
+      ctx.textAlign = 'left';
+    } else {
+      ctx.textAlign = 'right';
+    }
+    // Vertical nudge: labels at top get pushed up, bottom pushed down
+    if (sinA < -0.3) ctx.textBaseline = 'bottom';
+    else if (sinA > 0.3) ctx.textBaseline = 'top';
+    else ctx.textBaseline = 'middle';
+
     ctx.fillText(cap.label, labelX, labelY);
     ctx.restore();
   });
@@ -1244,11 +1482,11 @@ function drawRadarChart(allCaps, capScores) {
 
   // Legend
   ctx.font = '10px Inter, system-ui, sans-serif';
-  const legendY = 432;
+  const legendY = ch - 20;
   const legends = [
-    { label: 'Erkennen', color: colors.erkennen, x: 100 },
-    { label: 'Bereitschaft', color: colors.bereitschaft, x: 210 },
-    { label: 'Gestaltung', color: colors.gestaltung, x: 330 }
+    { label: 'Erkennen', color: colors.erkennen, x: 150 },
+    { label: 'Bereitschaft', color: colors.bereitschaft, x: 270 },
+    { label: 'Gestaltung', color: colors.gestaltung, x: 400 }
   ];
   legends.forEach(l => {
     ctx.fillStyle = l.color;
@@ -1258,6 +1496,150 @@ function drawRadarChart(allCaps, capScores) {
     ctx.textBaseline = 'middle';
     ctx.fillText(l.label, l.x, legendY);
   });
+}
+
+// ============================================================
+// EMAIL VALIDATION & CONTACT FORM
+// ============================================================
+// ── WEB3FORMS CONFIG ──
+// Trage hier deinen Web3Forms Access Key ein (https://web3forms.com)
+const WEB3FORMS_KEY = 'aa2b3b77-0335-4a96-8097-124e991973a2';
+
+(function() {
+  const emailInput = document.getElementById('emailInput');
+  const submitBtn = document.getElementById('contactSubmitBtn');
+  const emailHint = document.getElementById('emailHint');
+
+  function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function updateButtonState() {
+    const valid = validateEmail(emailInput.value.trim());
+    submitBtn.disabled = !valid;
+    if (emailInput.value.trim().length > 0 && !valid) {
+      emailInput.classList.add('invalid');
+      emailInput.classList.remove('valid');
+      emailHint.textContent = 'Bitte gib eine gültige E-Mail-Adresse ein.';
+    } else if (valid) {
+      emailInput.classList.remove('invalid');
+      emailInput.classList.add('valid');
+      emailHint.textContent = '';
+    } else {
+      emailInput.classList.remove('invalid', 'valid');
+      emailHint.textContent = '';
+    }
+  }
+
+  emailInput.addEventListener('input', updateButtonState);
+  emailInput.addEventListener('blur', updateButtonState);
+})();
+
+// ── Print date ──
+function showResults() {
+  // (original showResults logic is above — this just adds the print date)
+  document.getElementById('printDate').textContent =
+    new Date().toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' });
+  // call the real showResults
+  _showResults();
+}
+
+// ── Collect results as text for email ──
+function getResultsSummary() {
+  const allCaps = [...capabilities.erkennen, ...capabilities.bereitschaft, ...capabilities.gestaltung];
+  const capScores = {};
+  let totalRaw = 0;
+  allCaps.forEach(cap => {
+    const scores = answers[cap.id];
+    const avg = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 2.5;
+    capScores[cap.id] = avg;
+    totalRaw += scores.reduce((a, b) => a + b, 0);
+  });
+  const i2qScore = Math.round(((totalRaw - 24) / 72) * 100);
+
+  const compLines = ['erkennen', 'bereitschaft', 'gestaltung'].map(comp => {
+    const caps = capabilities[comp];
+    const avg = caps.reduce((sum, c) => sum + capScores[c.id], 0) / 4;
+    const pct = Math.round(((avg - 1) / 3) * 100);
+    const name = comp.charAt(0).toUpperCase() + comp.slice(1);
+    return `${name}: ${pct}%`;
+  });
+
+  const ranked = allCaps.map(c => ({ ...c, score: capScores[c.id] })).sort((a, b) => b.score - a.score);
+  const strengths = ranked.slice(0, 3).map(s => s.label).join(', ');
+  const devFields = ranked.slice(-3).reverse().map(d => d.label).join(', ');
+  const narrative = document.getElementById('narrativeText')?.textContent || '';
+
+  return [
+    `I²Q Score: ${i2qScore}`,
+    '',
+    'Komponenten:',
+    ...compLines,
+    '',
+    `Stärken: ${strengths}`,
+    `Entwicklungsfelder: ${devFields}`,
+    '',
+    'Profil:',
+    narrative
+  ].join('\n');
+}
+
+// ── Submit contact form via Web3Forms ──
+async function submitContact() {
+  const btn = document.getElementById('contactSubmitBtn');
+  const feedback = document.getElementById('submitFeedback');
+  const email = document.getElementById('emailInput').value.trim();
+  const wantsContact = document.getElementById('contactCheckbox').checked;
+
+  btn.disabled = true;
+  btn.textContent = 'Wird gesendet …';
+  feedback.className = 'submit-feedback';
+  feedback.style.display = 'none';
+
+  const resultsSummary = getResultsSummary();
+
+  const payload = {
+    access_key: WEB3FORMS_KEY,
+    subject: 'I²Q Assessment — Neue Kontaktanfrage',
+    from_name: 'I²Q Self-Assessment',
+    email: email,
+    message: [
+      wantsContact ? '✓ Nutzer wünscht Kontakt zu seinen Ergebnissen' : '(Kein Kontaktwunsch angekreuzt)',
+      '',
+      '─── ERGEBNISSE ───',
+      resultsSummary,
+      '',
+      '─── KONTAKT ───',
+      `Email: ${email}`,
+      `Datum: ${new Date().toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}`
+    ].join('\n')
+  };
+
+  try {
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      feedback.className = 'submit-feedback success';
+      feedback.textContent = 'Danke! Deine Anfrage wurde gesendet. Wir melden uns bei dir.';
+      feedback.style.display = 'block';
+      btn.textContent = 'Gesendet';
+    } else {
+      throw new Error(data.message || 'Unbekannter Fehler');
+    }
+  } catch (err) {
+    console.error('Contact form error:', err);
+    feedback.className = 'submit-feedback error';
+    feedback.textContent = 'Das hat leider nicht geklappt. Bitte versuche es später erneut.';
+    feedback.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Absenden';
+  }
 }
 </script>
 
