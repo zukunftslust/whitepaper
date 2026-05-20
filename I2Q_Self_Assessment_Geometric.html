@@ -1599,12 +1599,17 @@ function getResultsSummary() {
   });
   const i2qScore = Math.round(((totalRaw - 24) / 72) * 100);
 
-  const compLines = ['erkennen', 'bereitschaft', 'gestaltung'].map(comp => {
+  const compBlocks = ['erkennen', 'bereitschaft', 'gestaltung'].map(comp => {
     const caps = capabilities[comp];
     const avg = caps.reduce((sum, c) => sum + capScores[c.id], 0) / 4;
     const pct = Math.round(((avg - 1) / 3) * 100);
     const name = comp.charAt(0).toUpperCase() + comp.slice(1);
-    return `${name}: ${pct}%`;
+    const capLines = caps.map(c => {
+      const cAvg = capScores[c.id];
+      const cPct = Math.round(((cAvg - 1) / 3) * 100);
+      return `  ${c.label}: ${cPct}%`;
+    });
+    return [`${name}: ${pct}%`, ...capLines].join('\n');
   });
 
   const ranked = allCaps.map(c => ({ ...c, score: capScores[c.id] })).sort((a, b) => b.score - a.score);
@@ -1615,8 +1620,8 @@ function getResultsSummary() {
   return [
     `I²Q Score: ${i2qScore}`,
     '',
-    'Komponenten:',
-    ...compLines,
+    'Komponenten & Fähigkeiten:',
+    ...compBlocks,
     '',
     `Stärken: ${strengths}`,
     `Entwicklungsfelder: ${devFields}`,
