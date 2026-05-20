@@ -1042,7 +1042,7 @@
       </div>
 
       <div class="print-footer">
-        <p>zukunftslust.com — I²Q Self-Assessment</p>
+        <p>zukunftslust.online — I²Q Self-Assessment</p>
       </div>
     </div>
   </div>
@@ -1646,13 +1646,16 @@ async function submitContact() {
 
   const resultsSummary = getResultsSummary();
 
+  // Turnstile protects the form client-side (button disabled until solved).
+  // We do NOT send the token to Web3Forms — that would require configuring
+  // the Turnstile secret key in the Web3Forms dashboard.
   const payload = {
     access_key: WEB3FORMS_KEY,
     subject: 'I²Q Assessment — Neue Kontaktanfrage' + (name ? ' von ' + name : ''),
     from_name: name || 'I²Q Self-Assessment',
     email: email,
     name: name || '(nicht angegeben)',
-    'cf-turnstile-response': turnstileToken,
+    botcheck: '',  // Web3Forms honeypot field (must be empty)
     message: [
       wantsContact ? '✓ Nutzer wünscht Kontakt zu seinen Ergebnissen' : '(Kein Kontaktwunsch angekreuzt)',
       '',
@@ -1669,11 +1672,12 @@ async function submitContact() {
   try {
     const response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(payload)
     });
 
     const data = await response.json();
+    console.log('Web3Forms response:', data);
 
     if (data.success) {
       feedback.className = 'submit-feedback success';
@@ -1681,12 +1685,17 @@ async function submitContact() {
       feedback.style.display = 'block';
       btn.textContent = 'Gesendet';
     } else {
-      throw new Error(data.message || 'Unbekannter Fehler');
+      console.error('Web3Forms rejection:', data);
+      feedback.className = 'submit-feedback error';
+      feedback.textContent = 'Das hat leider nicht geklappt: ' + (data.message || 'Unbekannter Fehler');
+      feedback.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Absenden';
     }
   } catch (err) {
     console.error('Contact form error:', err);
     feedback.className = 'submit-feedback error';
-    feedback.textContent = 'Das hat leider nicht geklappt. Bitte versuche es später erneut.';
+    feedback.textContent = 'Verbindungsfehler — bitte prüfe deine Internetverbindung und versuche es erneut.';
     feedback.style.display = 'block';
     btn.disabled = false;
     btn.textContent = 'Absenden';
